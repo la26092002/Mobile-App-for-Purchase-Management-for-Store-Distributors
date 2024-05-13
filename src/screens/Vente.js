@@ -5,6 +5,8 @@ export default function Vente() {
   return (
     <View>
       <Text>Vente</Text>
+      <Text>Vente</Text>
+      <Text>Vente</Text>
     </View>
   )
 }

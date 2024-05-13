@@ -4,6 +4,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import React from "react";
+import BottomNav from "../Components/BottomNav";
 
 export default function Product({ navigation }) {
   return (
@@ -21,11 +22,10 @@ export default function Product({ navigation }) {
       {
         //body view
       }
-      <View style={styles.BodyView}></View>
+      
       {
         //bottom view
       }
-      <View style={styles.BottomView}></View>
     </View>
   );
 }
@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
   },
   BodyView: {
-    height: hp(40),
+    height: hp(35),
     width: wp(100),
     backgroundColor: "green",
   },
   BottomView: {
-    height: hp(10),
+    height: hp(15),
     width: wp(100),
-    backgroundColor: "black",
+    backgroundColor: "gray",
   },
 });
