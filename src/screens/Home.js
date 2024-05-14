@@ -51,12 +51,12 @@ const Home = () => {
     {
       key: "music",
       title: "Vente",
-      focusedIcon: "heart",
-      unfocusedIcon: "heart-outline",
+      focusedIcon: "sale",
+      unfocusedIcon: "sale",
     },
-    { key: "albums", title: "Produit", focusedIcon: "album" },
-    { key: "recents", title: "Fournisseur", focusedIcon: "history" },
-    { key: "parametre", title: "paramètre", focusedIcon: "history" },
+    { key: "albums", title: "Produit", focusedIcon: "package-variant-closed" },
+    { key: "recents", title: "Fournisseur", focusedIcon: "account-hard-hat" },
+    { key: "parametre", title: "paramètre", focusedIcon: "cog" },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
