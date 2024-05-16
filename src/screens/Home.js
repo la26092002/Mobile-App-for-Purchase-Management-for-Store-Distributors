@@ -68,11 +68,12 @@ const Home = () => {
 
   return (
     <>
-        <BottomNavigation style={styles.BottomView}
-          navigationState={{ index, routes }}
-          onIndexChange={setIndex}
-          renderScene={renderScene}
-        />
+      <BottomNavigation
+        style={styles.BottomView}
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+      />
     </>
   );
 };

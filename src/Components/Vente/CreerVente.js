@@ -27,7 +27,7 @@ const data = [
   { label: "Item 8", value: "8" },
 ];
 
-export default function ProductAdd({ setPart }) {
+export default function CreerVente({ setPart }) {
   const [name, setName] = React.useState("");
   const [price, setPrice] = React.useState("");
   
@@ -54,7 +54,7 @@ export default function ProductAdd({ setPart }) {
   return (
     <>
       <Card style={styles.Card}>
-        <Card.Title title="Ajouter un Produit" left={LeftContent} />
+        <Card.Title title="Ajouter une Vente" left={LeftContent} />
         <TextInput
           label="Nom"
           value={name}
