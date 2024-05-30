@@ -9,43 +9,38 @@ import { View } from 'react-native';
 import { useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { database } from './src/Model/database';
+import { DataProvider } from './src/Context/DataContext';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  //const isDBLoadingComplete = useDatabase();
+ 
 
-  //if (!isDBLoadingComplete) {
-  //return (
-  //<View>
-  //<Text>Loading Database...</Text>
-  //</View>
-  //);
-  //}
-
+/*
   useEffect(() => {
     async function load() {
       let db = await database.openDatabase();
-      await database.insertUser(db,"ali",19)
+      await database.insertFournisseur(db,"ali")
       await database.getUsers(db)
     }
 
     load()
   }, [])
+   */
 
   return (
-    <>
-    <TextInput> </TextInput>
+<>
+<DataProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Product" component={Product} />
+        <Stack.Screen name="Fournisseur" component={Fournisseur} />
+        <Stack.Screen name="Vente" component={Vente} />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    </DataProvider>
     </>
-
-    //<NavigationContainer>
-     // <Stack.Navigator initialRouteName="Home">
-       // <Stack.Screen name="Product" component={Product} />
-        //<Stack.Screen name="Fournisseur" component={Fournisseur} />
-        //<Stack.Screen name="Vente" component={Vente} />
-        //<Stack.Screen name="Home" component={Home} />
-      //</Stack.Navigator>
-    //</NavigationContainer>
   );
 }
 

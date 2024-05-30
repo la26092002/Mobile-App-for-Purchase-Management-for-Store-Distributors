@@ -5,43 +5,55 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-
 import { DataTable } from "react-native-paper";
-import { insererFournisseur, openDatabase } from "../SqlLite";
-import * as SQLite from "expo-sqlite";
+import { database } from "../Model/database";
+import { useDataContext } from "../Context/DataContext";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="account-hard-hat" />
 );
+
 export default function Fournisseur() {
   const [fournis, setFournis] = React.useState(false);
   const [name, setName] = React.useState("");
 
-
-  const [db, setDb] = useState(null);
-  const [data, setData] = useState("");
-  useEffect(() => {
-    const initDb = openDatabase();
-    setDb(initDb);
-  }, []);
-  const ajouterFournisseur = async () => {
-    if (db) {
-      const statement = await db.prepareAsync(
-        "INSERT INTO fournisseur (nom_fournisseur) VALUES ($nom_fournisseur)"
-      );
+  const [data, setData] = React.useState([]);
+  const { state, dispatch } = useDataContext();
+  let ajouterFournisseur = async () => {
+    if (name.length > 0) {
       try {
-        let result = await statement.executeAsync({ $nom_fournisseur: "larbi" });
-      console.log("data : ", result.lastInsertRowId, result.changes);
+        let db = await database.openDatabase();
+        let reslt = await database.insertFournisseur(db, name);
+        data.push({ id_fournisseur: reslt, nom_fournisseur: name });
+        dispatch({
+          type: "addProduct",
+          payload: { id_fournisseur: reslt, nom_fournisseur: name },
+        });
+        //console.log(reslt)
         setName("");
-        alert("gggg")
-        await statement.finalizeAsync();
       } catch (error) {
         console.error("Error inserting fournisseur:", error);
       }
     }
-    
-  
   };
+
+  useEffect(() => {
+    async function load() {
+      try {
+        let db = await database.openDatabase();
+        setData(await database.getFournisseur(db));
+        // console.log(await database.getFournisseur(db))
+      } catch (error) {
+        console.error("Error inserting fournisseur:", error);
+      }
+    }
+    load();
+  }, []);
+
+  useEffect(() => {
+    console.log(state.products);
+  }, [state.products]);
+
   return (
     <View>
       {!fournis && (
@@ -57,7 +69,7 @@ export default function Fournisseur() {
           />
           <Card.Actions>
             <Button onPress={() => setFournis(false)}>Cancel</Button>
-            <Button onPress={() => ajouterFournisseur}>Ajouter</Button>
+            <Button onPress={ajouterFournisseur}>Ajouter</Button>
           </Card.Actions>
         </Card>
       )}
@@ -69,187 +81,30 @@ export default function Fournisseur() {
               <DataTable.Title>Name</DataTable.Title>
               <DataTable.Title>Action</DataTable.Title>
             </DataTable.Header>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
 
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
+            {data.map((fournisseur) => (
+              <DataTable.Row key={fournisseur.id_fournisseur}>
+                <DataTable.Cell>{fournisseur.nom_fournisseur}</DataTable.Cell>
+                <DataTable.Cell>
+                  <Button
+                    icon="eyedropper-variant"
+                    mode="text"
+                    onPress={() => alert("Pressed")}
+                  >
+                    Modifier
+                  </Button>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  <Button
+                    icon="eyedropper-variant"
+                    mode="text"
+                    onPress={() => alert("Pressed")}
+                  >
+                    Vente
+                  </Button>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
           </DataTable>
         </ScrollView>
       </SafeAreaView>

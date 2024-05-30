@@ -38,13 +38,14 @@ const insertUser = async (db,userName, val) => {
 
 //insert fournisseur
 const insertFournisseur = async (db,nom) => {
-    await db.runAsync(
+    let result = await db.runAsync(
         "INSERT INTO fournisseur (nom_fournisseur) VALUES (?)",
         nom
       );
+      return result.lastInsertRowId;
 }
 //Get All fournisseur
-const getFournisseur = async (db,nom) => {
+const getFournisseur = async (db) => {
     const allRows = await db.getAllAsync("SELECT * FROM fournisseur");
   return allRows;
 }
