@@ -1,5 +1,5 @@
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Button, Card, Text, TextInput } from "react-native-paper";
 import {
   widthPercentageToDP as wp,
@@ -7,12 +7,41 @@ import {
 } from "react-native-responsive-screen";
 
 import { DataTable } from "react-native-paper";
+import { insererFournisseur, openDatabase } from "../SqlLite";
+import * as SQLite from "expo-sqlite";
 
-const LeftContent = (props) => <Avatar.Icon {...props} icon="account-hard-hat" />;
+const LeftContent = (props) => (
+  <Avatar.Icon {...props} icon="account-hard-hat" />
+);
 export default function Fournisseur() {
   const [fournis, setFournis] = React.useState(false);
   const [name, setName] = React.useState("");
 
+
+  const [db, setDb] = useState(null);
+  const [data, setData] = useState("");
+  useEffect(() => {
+    const initDb = openDatabase();
+    setDb(initDb);
+  }, []);
+  const ajouterFournisseur = async () => {
+    if (db) {
+      const statement = await db.prepareAsync(
+        "INSERT INTO fournisseur (nom_fournisseur) VALUES ($nom_fournisseur)"
+      );
+      try {
+        let result = await statement.executeAsync({ $nom_fournisseur: "larbi" });
+      console.log("data : ", result.lastInsertRowId, result.changes);
+        setName("");
+        alert("gggg")
+        await statement.finalizeAsync();
+      } catch (error) {
+        console.error("Error inserting fournisseur:", error);
+      }
+    }
+    
+  
+  };
   return (
     <View>
       {!fournis && (
@@ -28,7 +57,7 @@ export default function Fournisseur() {
           />
           <Card.Actions>
             <Button onPress={() => setFournis(false)}>Cancel</Button>
-            <Button onPress={() => alert(name)}>Ajouter</Button>
+            <Button onPress={() => ajouterFournisseur}>Ajouter</Button>
           </Card.Actions>
         </Card>
       )}
@@ -43,7 +72,7 @@ export default function Fournisseur() {
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -51,13 +80,12 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
 
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -65,12 +93,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -78,12 +105,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -91,12 +117,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -104,12 +129,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -117,12 +141,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -130,12 +153,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -143,12 +165,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -156,12 +177,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -169,12 +189,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -182,12 +201,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -195,12 +213,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -208,12 +225,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -221,12 +237,11 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
             <DataTable.Row>
               <DataTable.Cell>Larbi</DataTable.Cell>
               <DataTable.Cell>
-               <Button
+                <Button
                   icon="eyedropper-variant"
                   mode="text"
                   onPress={() => alert("Pressed")}
@@ -234,7 +249,6 @@ export default function Fournisseur() {
                   Modifier
                 </Button>
               </DataTable.Cell>
-             
             </DataTable.Row>
           </DataTable>
         </ScrollView>

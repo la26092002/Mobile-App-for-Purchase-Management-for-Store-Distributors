@@ -7,10 +7,11 @@ import {
 } from "react-native-responsive-screen";
 
 import { Dropdown } from "react-native-element-dropdown";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import * as SQLite from "expo-sqlite";
 
-import { useTheme } from 'react-native-paper';
-
+import { useTheme } from "react-native-paper";
+import { openDatabase } from "../../SqlLite";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />
@@ -30,7 +31,7 @@ const data = [
 export default function CreerVente({ setPart }) {
   const [name, setName] = React.useState("");
   const [price, setPrice] = React.useState("");
-  
+
   const [category, setCategorie] = useState(null);
 
   const renderItem = (item) => {
@@ -38,7 +39,7 @@ export default function CreerVente({ setPart }) {
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
         {item.value === category && (
-         <MaterialIcons name="category"  size={20} color="black" />
+          <MaterialIcons name="category" size={20} color="black" />
         )}
       </View>
     );
@@ -47,9 +48,28 @@ export default function CreerVente({ setPart }) {
   let theme = useTheme();
 
   useEffect(() => {
-    console.log(theme.colors.primary)
-  }, [])
-  
+    console.log(theme.colors.primary);
+  }, []);
+
+  useEffect(() => {
+    const setupDatabase = async () => {
+      // const db = await SQLite.openDatabaseAsync("databaseName");
+      const db = openDatabase;
+      const result = await db.runAsync(
+        "INSERT INTO test (value, intValue) VALUES (?, ?)",
+        ["aaa", 100]
+      );
+      //console.log("gg",result.lastInsertRowId, result.changes);
+
+      // `getAllAsync()` is useful when you want to get all results as an array of objects.
+      const allRows = await db.getAllAsync("SELECT * FROM test");
+      for (const row of allRows) {
+        console.log(row.id, row.value, row.intValue);
+      }
+    };
+
+    setupDatabase();
+  }, []);
 
   return (
     <>
@@ -66,8 +86,10 @@ export default function CreerVente({ setPart }) {
           onChangeText={(text) => setPrice(text)}
         />
         <Dropdown
-       
-          style={[styles.dropdown,{backgroundColor:theme.colors.surfaceVariant}]}
+          style={[
+            styles.dropdown,
+            { backgroundColor: theme.colors.surfaceVariant },
+          ]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -84,8 +106,7 @@ export default function CreerVente({ setPart }) {
             setCategorie(item.value);
           }}
           renderLeftIcon={() => (
-            <MaterialIcons name="category"  size={20} color="black" />
-            
+            <MaterialIcons name="category" size={20} color="black" />
           )}
           renderItem={renderItem}
         />
