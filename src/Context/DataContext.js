@@ -12,6 +12,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'addProduct':
       return { ...state, products: [...state.products, action.payload] };
+    case 'getProducts':
+        return { ...state, products: action.payload }; ;
     default:
       throw new Error();
   }

@@ -24,7 +24,7 @@ export default function Fournisseur() {
       try {
         let db = await database.openDatabase();
         let reslt = await database.insertFournisseur(db, name);
-        data.push({ id_fournisseur: reslt, nom_fournisseur: name });
+        data.push({ id_fournisseur: reslt+1, nom_fournisseur: name });
         dispatch({
           type: "addProduct",
           payload: { id_fournisseur: reslt, nom_fournisseur: name },
@@ -41,7 +41,12 @@ export default function Fournisseur() {
     async function load() {
       try {
         let db = await database.openDatabase();
-        setData(await database.getFournisseur(db));
+        let fournisseurs = await database.getFournisseur(db);
+        setData(fournisseurs);
+        dispatch({
+          type: "getProducts",
+          payload: fournisseurs,
+        });
         // console.log(await database.getFournisseur(db))
       } catch (error) {
         console.error("Error inserting fournisseur:", error);
@@ -82,7 +87,7 @@ export default function Fournisseur() {
               <DataTable.Title>Action</DataTable.Title>
             </DataTable.Header>
 
-            {data.map((fournisseur) => (
+            {state.products.map((fournisseur) => (
               <DataTable.Row key={fournisseur.id_fournisseur}>
                 <DataTable.Cell>{fournisseur.nom_fournisseur}</DataTable.Cell>
                 <DataTable.Cell>
