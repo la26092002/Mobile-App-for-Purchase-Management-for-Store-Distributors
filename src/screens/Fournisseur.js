@@ -24,7 +24,7 @@ export default function Fournisseur() {
       try {
         let db = await database.openDatabase();
         let reslt = await database.insertFournisseur(db, name);
-        data.push({ id_fournisseur: reslt+1, nom_fournisseur: name });
+        data.push({ id_fournisseur: reslt, nom_fournisseur: name });
         dispatch({
           type: "addProduct",
           payload: { id_fournisseur: reslt, nom_fournisseur: name },
@@ -49,7 +49,7 @@ export default function Fournisseur() {
         });
         // console.log(await database.getFournisseur(db))
       } catch (error) {
-        console.error("Error inserting fournisseur:", error);
+        console.error("Error select fournisseur:", error);
       }
     }
     load();

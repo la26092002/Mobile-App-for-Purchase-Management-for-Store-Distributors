@@ -15,10 +15,7 @@ export default function SegmentedButtonProduct({setPart}) {
         value={value}
         onValueChange={setValue}
         buttons={[
-            {
-                value: 0,
-                label: 'Produits',
-              },
+           
             {
             value: 1,
             label: 'Produit',

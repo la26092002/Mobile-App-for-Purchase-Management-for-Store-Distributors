@@ -1,16 +1,36 @@
 import { ScrollView, SafeAreaView, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DataTable,Avatar, Button, Card, Text, TextInput } from "react-native-paper";
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from "react-native-responsive-screen";
+import { database } from '../../Model/database';
+import { useDataContext } from '../../Context/DataContext';
 
 export default function ProduitSelect() {
+  const { state, dispatch } = useDataContext();
+  useEffect(() => {
+    async function load() {
+      try {
+        let db = await database.openDatabase();
+        let products = await database.getProducts(db);
+        
+        dispatch({
+          type: "getTheProduct",
+          payload: products,
+        });
+        // console.log(await database.getFournisseur(db))
+      } catch (error) {
+        console.error("Error select products:", error);
+      }
+    }
+    load();
+  }, []);
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
+      
+        
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Nom</DataTable.Title>
@@ -18,10 +38,11 @@ export default function ProduitSelect() {
               <DataTable.Title>Categorie</DataTable.Title>
               <DataTable.Title>Action</DataTable.Title>
             </DataTable.Header>
-            <DataTable.Row>
-              <DataTable.Cell>Larbi Larbi Larbi</DataTable.Cell>
-              <DataTable.Cell>Larbi Larbi Larbi</DataTable.Cell>
-              <DataTable.Cell>Larbi</DataTable.Cell>
+            {state.TheProducts.map((product) => (
+            <DataTable.Row key={product.id_produit}>
+              <DataTable.Cell>{product.nom_produit}</DataTable.Cell>
+              <DataTable.Cell>{product.prix_produit}</DataTable.Cell>
+              <DataTable.Cell>{product.id_category}</DataTable.Cell>
               
               <DataTable.Cell>
                 <Button
@@ -33,10 +54,9 @@ export default function ProduitSelect() {
                 </Button>
               </DataTable.Cell>
             </DataTable.Row>
-
+))}
           </DataTable>
-        </ScrollView>
-      </SafeAreaView>
+        
     </>
   )
 }

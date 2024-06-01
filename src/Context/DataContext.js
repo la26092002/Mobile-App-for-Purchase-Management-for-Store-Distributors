@@ -1,19 +1,32 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from "react";
 
 // Define the initial state
 const initialState = {
   products: [],
   pack: [],
-  category: []
+  category: [],
+  TheProducts: [],
 };
 
 // Define the reducer function to handle state transitions
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'addProduct':
+    case "addProduct":
       return { ...state, products: [...state.products, action.payload] };
-    case 'getProducts':
-        return { ...state, products: action.payload }; ;
+    case "getProducts":
+      return { ...state, products: action.payload };
+    case "addCategorie":
+      return { ...state, category: [...state.category, action.payload] };
+    case "getCategories":
+      return { ...state, category: action.payload };
+    case "addPack":
+      return { ...state, pack: [...state.pack, action.payload] };
+    case "getPack":
+      return { ...state, pack: action.payload };
+    case "addTheProduct":
+      return { ...state, TheProducts: [...state.TheProducts, action.payload] };
+    case "getTheProduct":
+      return { ...state, TheProducts: action.payload };
     default:
       throw new Error();
   }
