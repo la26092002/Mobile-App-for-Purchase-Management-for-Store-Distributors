@@ -28,6 +28,8 @@ export default function ProductAdd({ setPart }) {
   
   const [category, setCategory] = useState("");
   const [idCategory, setIdCategory] = useState(null);
+
+  const [produitStatus, setProduitStatus] = useState(true);
   
 
   const renderItem = (item) => {
@@ -71,49 +73,60 @@ export default function ProductAdd({ setPart }) {
     }
   };
 
+
+
   return (
     <>
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
+        {
+        produitStatus && <Button onPress={() => setProduitStatus(!produitStatus)}>Ajouter Produit</Button>
+       } 
+       {
+        !produitStatus && (
           <Card style={styles.Card}>
-            <Card.Title title="Ajouter un Produit" left={LeftContent} />
-            <TextInput
-              label="Nom"
-              value={name}
-              onChangeText={(text) => setName(text)}
-            />
-            <TextInput
-              label="Prix"
-              value={price}
-              onChangeText={(text) => setPrice(text)}
-            />
-            <Dropdown
-              style={[styles.dropdown, { backgroundColor: theme.colors.surfaceVariant }]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={state.category}
-              search
-              maxHeight={300}
-              labelField="nom_category"
-              valueField="id_category"
-              placeholder={category.length > 0 ? category : "Sélectionner la Catégorie"}
-              searchPlaceholder="Search..."
-              value={category}
-              onChange={(item) => {
-                setCategory(item.nom_category);
-                setIdCategory(item.id_category);
-              }}
-              renderLeftIcon={() => (
-                <MaterialIcons name="category" size={20} color="black" />
-              )}
-              renderItem={renderItem}
-            />
-            <Card.Actions>
-              <Button onPress={ajouterProduit}>Ajouter</Button>
-            </Card.Actions>
-          </Card>
+          <Card.Title title="Ajouter un Produit" left={LeftContent} />
+          <TextInput
+            label="Nom"
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
+          <TextInput
+            label="Prix"
+            value={price}
+            onChangeText={(text) => setPrice(text)}
+          />
+          <Dropdown
+            style={[styles.dropdown, { backgroundColor: theme.colors.surfaceVariant }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={state.category}
+            search
+            maxHeight={300}
+            labelField="nom_category"
+            valueField="id_category"
+            placeholder={category.length > 0 ? category : "Sélectionner la Catégorie"}
+            searchPlaceholder="Search..."
+            value={category}
+            onChange={(item) => {
+              setCategory(item.nom_category);
+              setIdCategory(item.id_category);
+            }}
+            renderLeftIcon={() => (
+              <MaterialIcons name="category" size={20} color="black" />
+            )}
+            renderItem={renderItem}
+          />
+          <Card.Actions>
+          <Button onPress={() => setProduitStatus(true)}>Cancel</Button>
+            <Button onPress={ajouterProduit}>Ajouter</Button>
+          </Card.Actions>
+        </Card>
+        )
+       }
+         
           <ProduitSelect />
         </ScrollView>
       </SafeAreaView>

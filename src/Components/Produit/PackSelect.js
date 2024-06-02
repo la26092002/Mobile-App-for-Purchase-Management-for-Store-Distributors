@@ -1,12 +1,21 @@
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
-import React, { useEffect } from "react";
-import { Avatar, Button, Card, DataTable, TextInput } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Button,
+  Card,
+  DataTable,
+  TextInput,
+  useTheme,
+} from "react-native-paper";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { database } from "../../Model/database";
 import { useDataContext } from "../../Context/DataContext";
+import { Dropdown } from "react-native-element-dropdown";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="package-variant-closed" />
@@ -18,17 +27,23 @@ export default function PackSelect() {
   const [quantite, setQuantite] = React.useState("");
   const [prix, setPrix] = React.useState("");
 
+  let theme = useTheme();
+  const [produit, setProduit] = useState("");
+  const [idProduit, setIdProduit] = useState(null);
+
+  const [pack, setPack] = useState(true);
+  
   let ajouterPack = async () => {
-    if (name.length > 0 && quantite.length > 0) {
+    if (idProduit !== null && quantite.length > 0 && prix.length > 0) {
       try {
         let db = await database.openDatabase();
-        let reslt = await database.insertPack(db, name, quantite,prix);
+        let reslt = await database.insertPack(db, idProduit, quantite, prix);
         //data.push({ id_fournisseur: reslt+1, nom_fournisseur: name });
         dispatch({
           type: "addPack",
           payload: {
             id_pack: reslt,
-            nom_pack: name,
+            id_produit: idProduit,
             quantite_pack: quantite,
             prix: prix,
           },
@@ -36,7 +51,7 @@ export default function PackSelect() {
         //console.log(reslt)
         setName("");
         setQuantite("");
-        setPrix("")
+        setPrix("");
       } catch (error) {
         console.error("Error inserting fournisseur:", error);
       }
@@ -60,16 +75,56 @@ export default function PackSelect() {
     }
     load();
   }, []);
+
+  const renderItem = (item) => {
+    return (
+      <View style={styles.item}>
+        <Text style={styles.textItem}>{item.nom_produit}</Text>
+        {item.nom_produit === produit && (
+          <MaterialIcons name="category" size={20} color="black" />
+        )}
+      </View>
+    );
+  };
   return (
     <>
       <SafeAreaView style={styles.Bodyiew}>
         <ScrollView style={styles.scrollView}>
-          <Card style={styles.Card}>
+       {
+        pack && <Button onPress={() => setPack(!pack)}>Ajouter Pack</Button>
+       } 
+         {
+          !pack && (
+            <Card style={styles.Card}>
             <Card.Title title="Ajouter un Pack" left={LeftContent} />
-            <TextInput
-              label="Nom de Pack"
-              value={name}
-              onChangeText={(text) => setName(text)}
+
+            <Dropdown
+              style={[
+                styles.dropdown,
+                { backgroundColor: theme.colors.surfaceVariant },
+              ]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={state.TheProducts}
+              search
+              maxHeight={300}
+              labelField="nom_produit"
+              valueField="id_produit"
+              placeholder={
+                produit.length > 0 ? produit : "Sélectionner le Produit"
+              }
+              searchPlaceholder="Search..."
+              value={produit}
+              onChange={(item) => {
+                setProduit(item.nom_produit);
+                setIdProduit(item.id_produit);
+              }}
+              renderLeftIcon={() => (
+                <MaterialIcons name="category" size={20} color="black" />
+              )}
+              renderItem={renderItem}
             />
 
             <TextInput
@@ -85,9 +140,12 @@ export default function PackSelect() {
             />
 
             <Card.Actions>
+            <Button onPress={() => setPack(!pack)}>Cancel</Button>
               <Button onPress={ajouterPack}>Ajouter</Button>
             </Card.Actions>
           </Card>
+          )
+         } 
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Nom</DataTable.Title>
@@ -98,7 +156,7 @@ export default function PackSelect() {
             </DataTable.Header>
             {state.pack.map((pack, index) => (
               <DataTable.Row key={pack.id_pack}>
-                <DataTable.Cell>{pack.nom_pack} </DataTable.Cell>
+                <DataTable.Cell>{pack.nom_produit} </DataTable.Cell>
                 <DataTable.Cell>{pack.quantite_pack}</DataTable.Cell>
                 <DataTable.Cell>{pack.prix}</DataTable.Cell>
 
@@ -121,6 +179,65 @@ export default function PackSelect() {
 }
 
 const styles = StyleSheet.create({
+  dropdown: {
+    margin: 0,
+    height: 60,
+    borderRadius: 0,
+    padding: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  dropdown: {
+    margin: 0,
+    height: 60,
+    borderRadius: 0,
+    padding: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  scrollView: {
+    marginHorizontal: 10,
+    height: hp(60),
+  },
   Bodyiew: {
     height: hp(70),
     width: wp(100),

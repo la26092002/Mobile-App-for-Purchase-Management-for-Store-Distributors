@@ -42,7 +42,7 @@ export default function ProduitSelect() {
             <DataTable.Row key={product.id_produit}>
               <DataTable.Cell>{product.nom_produit}</DataTable.Cell>
               <DataTable.Cell>{product.prix_produit}</DataTable.Cell>
-              <DataTable.Cell>{product.id_category}</DataTable.Cell>
+              <DataTable.Cell>{product.nom_category}</DataTable.Cell>
               
               <DataTable.Cell>
                 <Button

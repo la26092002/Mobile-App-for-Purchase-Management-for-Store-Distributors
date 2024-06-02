@@ -11,6 +11,9 @@ import { useDataContext } from "../../Context/DataContext";
 const LeftContent = (props) => <Avatar.Icon {...props} icon="shape" />;
 export default function CategorySelect({}) {
   const [name, setName] = React.useState("");
+  const [categorieStatus, setCategorieStatus] = React.useState(true);
+  
+
   const { state, dispatch } = useDataContext();
   async function addCategorie() {
     if (name.length > 0) {
@@ -51,17 +54,26 @@ export default function CategorySelect({}) {
     <>
       <SafeAreaView style={styles.Bodyiew}>
         <ScrollView style={styles.scrollView}>
+        {
+        categorieStatus && <Button onPress={() => setCategorieStatus(!categorieStatus)}>Ajouter Produit</Button>
+       } 
+       {
+        !categorieStatus && (
           <Card style={styles.Card}>
-            <Card.Title title="Ajouter une Categorie" left={LeftContent} />
-            <TextInput
-              label="Nom de Categorie"
-              value={name}
-              onChangeText={(text) => setName(text)}
-            />
-            <Card.Actions>
-              <Button onPress={addCategorie}>Ajouter</Button>
-            </Card.Actions>
-          </Card>
+          <Card.Title title="Ajouter une Categorie" left={LeftContent} />
+          <TextInput
+            label="Nom de Categorie"
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
+          <Card.Actions>
+          <Button onPress={() => setCategorieStatus(!categorieStatus)}>Cancel</Button>
+            <Button onPress={addCategorie}>Ajouter</Button>
+          </Card.Actions>
+        </Card>
+        )
+       }
+         
 
           <DataTable>
             <DataTable.Header>

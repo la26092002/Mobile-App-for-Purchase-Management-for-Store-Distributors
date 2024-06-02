@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -21,12 +21,6 @@ const openDatabase = async () => {
       nom_category TEXT NOT NULL
   );
   
-  CREATE TABLE IF NOT EXISTS pack (
-      id_pack INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      nom_pack TEXT NOT NULL,
-      quantite_pack TEXT NOT NULL,
-      prix TEXT NOT NULL
-  );
   
   CREATE TABLE IF NOT EXISTS produit (
       id_produit INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -35,6 +29,14 @@ const openDatabase = async () => {
       id_category INTEGER,
       FOREIGN KEY (id_category) REFERENCES category(id_category)
   );
+
+  CREATE TABLE IF NOT EXISTS pack (
+    id_pack INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    quantite_pack TEXT NOT NULL,
+    prix TEXT NOT NULL,
+    id_produit INTEGER,
+    FOREIGN KEY (id_produit) REFERENCES produit(id_produit)
+);
   `);
   
 
@@ -89,17 +91,17 @@ const getCategories = async (db) => {
 };
 
 //-------------pack----------------
-const insertPack = async (db, nom, quantite,prix) => {
+const insertPack = async (db, id_produit, quantite,prix) => {
   let result = await db.runAsync(
-    "INSERT INTO pack (nom_pack,quantite_pack,prix) VALUES (?,?,?)",
-    nom,quantite,prix
+    "INSERT INTO pack (id_produit,quantite_pack,prix) VALUES (?,?,?)",
+    id_produit,quantite,prix
     
   );
   return result.lastInsertRowId;
 };
 //Get All packs
 const getPacks = async (db) => {
-  const allRows = await db.getAllAsync("SELECT * FROM pack");
+  const allRows = await db.getAllAsync("SELECT  p.nom_produit, k.quantite_pack,k.prix FROM pack k JOIN  produit p ON   k.id_produit = p.id_produit");
   return allRows;
 };
 
@@ -117,7 +119,7 @@ const insertProduct = async (db, nom_produit, prix_produit,id_category) => {
 };
 //Get All packs
 const getProducts = async (db) => {
-  const allRows = await db.getAllAsync("SELECT * FROM produit");
+  const allRows = await db.getAllAsync("SELECT   p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category");
   return allRows;
 };
 
