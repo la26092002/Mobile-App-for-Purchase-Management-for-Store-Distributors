@@ -5,6 +5,9 @@ import {
   Button,
   Card,
   DataTable,
+  Modal,
+  PaperProvider,
+  Portal,
   TextInput,
   useTheme,
 } from "react-native-paper";
@@ -32,7 +35,7 @@ export default function PackSelect() {
   const [idProduit, setIdProduit] = useState(null);
 
   const [pack, setPack] = useState(true);
-  
+
   let ajouterPack = async () => {
     if (idProduit !== null && quantite.length > 0 && prix.length > 0) {
       try {
@@ -90,62 +93,60 @@ export default function PackSelect() {
     <>
       <SafeAreaView style={styles.Bodyiew}>
         <ScrollView style={styles.scrollView}>
-       {
-        pack && <Button onPress={() => setPack(!pack)}>Ajouter Pack</Button>
-       } 
-         {
-          !pack && (
+          {pack && <Button onPress={() => setPack(!pack)}>Ajouter Pack</Button>}
+          {!pack && (
             <Card style={styles.Card}>
-            <Card.Title title="Ajouter un Pack" left={LeftContent} />
+              <Card.Title title="Ajouter un Pack" left={LeftContent} />
 
-            <Dropdown
-              style={[
-                styles.dropdown,
-                { backgroundColor: theme.colors.surfaceVariant },
-              ]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={state.TheProducts}
-              search
-              maxHeight={300}
-              labelField="nom_produit"
-              valueField="id_produit"
-              placeholder={
-                produit.length > 0 ? produit : "Sélectionner le Produit"
-              }
-              searchPlaceholder="Search..."
-              value={produit}
-              onChange={(item) => {
-                setProduit(item.nom_produit);
-                setIdProduit(item.id_produit);
-              }}
-              renderLeftIcon={() => (
-                <MaterialIcons name="category" size={20} color="black" />
-              )}
-              renderItem={renderItem}
-            />
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  { backgroundColor: theme.colors.surfaceVariant },
+                ]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={state.TheProducts}
+                search
+                maxHeight={300}
+                labelField="nom_produit"
+                valueField="id_produit"
+                placeholder={
+                  produit.length > 0 ? produit : "Sélectionner le Produit"
+                }
+                searchPlaceholder="Search..."
+                value={produit}
+                onChange={(item) => {
+                  setProduit(item.nom_produit);
+                  setIdProduit(item.id_produit);
+                }}
+                renderLeftIcon={() => (
+                  <MaterialIcons name="category" size={20} color="black" />
+                )}
+                renderItem={renderItem}
+              />
 
-            <TextInput
-              label="Quantite"
-              value={quantite}
-              onChangeText={(text) => setQuantite(text)}
-            />
+              <TextInput
+                label="Quantite"
+                value={quantite}
+                onChangeText={(text) => setQuantite(text)}
+              />
 
-            <TextInput
-              label="Prix"
-              value={prix}
-              onChangeText={(text) => setPrix(text)}
-            />
+              <TextInput
+                label="Prix"
+                value={prix}
+                onChangeText={(text) => setPrix(text)}
+              />
 
-            <Card.Actions>
-            <Button onPress={() => setPack(!pack)}>Cancel</Button>
-              <Button onPress={ajouterPack}>Ajouter</Button>
-            </Card.Actions>
-          </Card>
-          )
-         } 
+              <Card.Actions>
+                <Button onPress={() => setPack(!pack)}>Cancel</Button>
+                <Button onPress={ajouterPack}>Ajouter</Button>
+              </Card.Actions>
+            </Card>
+          )}
+
+
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Nom</DataTable.Title>
@@ -164,7 +165,6 @@ export default function PackSelect() {
                   <Button
                     icon="eyedropper-variant"
                     mode="text"
-                    onPress={() => alert("Pressed")}
                   >
                     Modifier
                   </Button>

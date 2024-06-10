@@ -85,31 +85,37 @@ export default function CreerVente({ setPart }) {
           value={price}
           onChangeText={(text) => setPrice(text)}
         />
-        <Dropdown
-          style={[
-            styles.dropdown,
-            { backgroundColor: theme.colors.surfaceVariant },
-          ]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Sélectionner la Catégorie"
-          searchPlaceholder="Search..."
-          value={category}
-          onChange={(item) => {
-            setCategorie(item.value);
-          }}
-          renderLeftIcon={() => (
-            <MaterialIcons name="category" size={20} color="black" />
-          )}
-          renderItem={renderItem}
-        />
+        <View style={{display: "inline-grid"}}>
+          <Dropdown
+            style={[
+              styles.dropdown,
+              { backgroundColor: theme.colors.surfaceVariant, width: wp(45) },
+            ]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Produit"
+            searchPlaceholder="Search..."
+            value={category}
+            onChange={(item) => {
+              setCategorie(item.value);
+            }}
+            renderLeftIcon={() => (
+              <MaterialIcons name="category" size={20} color="black" />
+            )}
+            renderItem={renderItem}
+          />
+           <Button style={{width: wp(45)}} icon="plus" mode="contained" onPress={() => console.log('Pressed')}>
+    Press me
+  </Button>
+        </View>
+
         <Card.Actions>
           <Button onPress={() => alert(name)}>Ajouter</Button>
         </Card.Actions>

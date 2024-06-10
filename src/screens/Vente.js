@@ -19,33 +19,28 @@ export default function Vente() {
   const [name, setName] = React.useState("");
   return (
     <>
-    
-    <View style={styles.Container}>
-      {
-        //nav view
-      }
-      <View style={styles.NavView}>
-        <SegmentedButtonProduct2 setPart={setPart} />
+      <View style={styles.Container}>
+        {
+          //nav view
+        }
+        <View style={styles.NavView}>
+          <SegmentedButtonProduct2 setPart={setPart} />
         </View>
         <View style={styles.Bodyiew}>
-        {part == 0 && (<ProduitSelect />)}
-        {part == 1 && (
-          <CreerVente setPart={setPart}/>
-          
-        )}
-      </View>
-      {
-        //body view
-      }
+          {part == 0 && <ProduitSelect />}
+          {part == 1 && <CreerVente setPart={setPart} />}
+        </View>
+        {
+          //body view
+        }
 
-      {
-        //bottom view
-      }
-    </View>
+        {
+          //bottom view
+        }
+      </View>
     </>
   );
 }
-
 
 const styles = StyleSheet.create({
   Container: {
