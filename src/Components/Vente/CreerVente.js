@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Card, DataTable, TextInput } from "react-native-paper";
 import {
@@ -12,6 +12,8 @@ import * as SQLite from "expo-sqlite";
 
 import { useTheme } from "react-native-paper";
 import { openDatabase } from "../../SqlLite";
+import AddVenteGrid from "./AddVenteGrid";
+import VenteSelect from "./VenteSelect";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />
@@ -73,64 +75,37 @@ export default function CreerVente({ setPart }) {
 
   return (
     <>
+     <ScrollView style={styles.scrollView}>
       <Card style={styles.Card}>
         <Card.Title title="Ajouter une Vente" left={LeftContent} />
-        <TextInput
-          label="Nom"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-        <TextInput
-          label="Prix"
-          value={price}
-          onChangeText={(text) => setPrice(text)}
-        />
-        <View style={{display: "inline-grid"}}>
-          <Dropdown
-            style={[
-              styles.dropdown,
-              { backgroundColor: theme.colors.surfaceVariant, width: wp(45) },
-            ]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Produit"
-            searchPlaceholder="Search..."
-            value={category}
-            onChange={(item) => {
-              setCategorie(item.value);
-            }}
-            renderLeftIcon={() => (
-              <MaterialIcons name="category" size={20} color="black" />
-            )}
-            renderItem={renderItem}
-          />
-           <Button style={{width: wp(45)}} icon="plus" mode="contained" onPress={() => console.log('Pressed')}>
-    Press me
-  </Button>
+        
+
+        <AddVenteGrid />
+        <View>
+          
+          
         </View>
 
         <Card.Actions>
           <Button onPress={() => alert(name)}>Ajouter</Button>
         </Card.Actions>
       </Card>
+      <VenteSelect />
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    height: hp(80),
+  },
   Bodyiew: {
     height: hp(70),
     width: wp(100),
   },
   Card: {
-    marginHorizontal: 10,
+    marginHorizontal: wp(4),
   },
 
   //Dropdown Part
