@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -101,7 +101,7 @@ const insertPack = async (db, id_produit, quantite,prix) => {
 };
 //Get All packs
 const getPacks = async (db) => {
-  const allRows = await db.getAllAsync("SELECT  p.nom_produit, k.quantite_pack,k.prix FROM pack k JOIN  produit p ON   k.id_produit = p.id_produit");
+  const allRows = await db.getAllAsync("SELECT k.id_pack, p.nom_produit, k.quantite_pack,k.prix FROM pack k JOIN  produit p ON   k.id_produit = p.id_produit");
   return allRows;
 };
 
@@ -119,7 +119,7 @@ const insertProduct = async (db, nom_produit, prix_produit,id_category) => {
 };
 //Get All packs
 const getProducts = async (db) => {
-  const allRows = await db.getAllAsync("SELECT   p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category");
+  const allRows = await db.getAllAsync("SELECT   p.id_produit, p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category");
   return allRows;
 };
 

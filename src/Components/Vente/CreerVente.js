@@ -53,44 +53,19 @@ export default function CreerVente({ setPart }) {
     console.log(theme.colors.primary);
   }, []);
 
-  useEffect(() => {
-    const setupDatabase = async () => {
-      // const db = await SQLite.openDatabaseAsync("databaseName");
-      const db = openDatabase;
-      const result = await db.runAsync(
-        "INSERT INTO test (value, intValue) VALUES (?, ?)",
-        ["aaa", 100]
-      );
-      //console.log("gg",result.lastInsertRowId, result.changes);
 
-      // `getAllAsync()` is useful when you want to get all results as an array of objects.
-      const allRows = await db.getAllAsync("SELECT * FROM test");
-      for (const row of allRows) {
-        console.log(row.id, row.value, row.intValue);
-      }
-    };
-
-    setupDatabase();
-  }, []);
 
   return (
     <>
-     <ScrollView style={styles.scrollView}>
-      <Card style={styles.Card}>
-        <Card.Title title="Ajouter une Vente" left={LeftContent} />
-        
-
-        <AddVenteGrid />
-        <View>
-          
-          
-        </View>
-
-        <Card.Actions>
-          <Button onPress={() => alert(name)}>Ajouter</Button>
-        </Card.Actions>
-      </Card>
-      <VenteSelect />
+      <ScrollView style={styles.scrollView}>
+        <Card style={styles.Card}>
+          <Card.Title title="Ajouter une Vente" left={LeftContent} />
+          <AddVenteGrid />
+          <Card.Actions>
+            <Button onPress={() => alert(name)}>Ajouter</Button>
+          </Card.Actions>
+        </Card>
+        <VenteSelect />
       </ScrollView>
     </>
   );

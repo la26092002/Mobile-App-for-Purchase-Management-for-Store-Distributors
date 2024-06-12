@@ -46,7 +46,7 @@ export default function PackSelect() {
           type: "addPack",
           payload: {
             id_pack: reslt,
-            id_produit: idProduit,
+            nom_produit: produit,
             quantite_pack: quantite,
             prix: prix,
           },

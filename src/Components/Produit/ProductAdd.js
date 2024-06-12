@@ -55,13 +55,14 @@ export default function ProductAdd({ setPart }) {
       try {
         let db = await database.openDatabase();
         let reslt = await database.insertProduct(db, name, price, idCategory);
+        console.log('Product inserted with id:', reslt);
         dispatch({
           type: "addTheProduct",
           payload: {
             id_produit: reslt,
             nom_produit: name,
             prix_produit: price,
-            id_category: idCategory,
+            nom_category: category,
           },
         });
         setName("");
