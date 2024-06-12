@@ -48,7 +48,7 @@ export default function AddVenteGrid() {
       try {
         dispatch({
           type: "addVenteProduit",
-          payload: `${idproduct}/${quantiteProduct}`,
+          payload: { idproduct, quantiteProduct },
         });
         alert("Product added successfully");
         console.log(`Product added: ${idproduct}/${quantiteProduct}`);

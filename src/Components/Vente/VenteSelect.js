@@ -36,7 +36,13 @@ export default function VenteSelect() {
         ) : (
           <DataTable.Row>
             <DataTable.Cell>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Text>Aucun pack disponible</Text>
               </View>
             </DataTable.Cell>
@@ -44,9 +50,9 @@ export default function VenteSelect() {
         )}
       </DataTable>
 
-{
-  //i need this part of product to modify
-}
+      {
+        //i need this part of product to modify
+      }
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Produit</DataTable.Title>
@@ -54,16 +60,16 @@ export default function VenteSelect() {
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
 
-        {state.Ventes.pack && state.Ventes.pack.length > 0 ? (
-          state.Ventes.pack.map((item, index) => (
+        {state.Ventes.produit && state.Ventes.produit.length > 0 ? (
+          state.Ventes.produit.map((item, index) => (
             <DataTable.Row key={index}>
-              <DataTable.Cell>{item.idPack}</DataTable.Cell>
-              <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
+              <DataTable.Cell>{item.idproduct}</DataTable.Cell>
+              <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
               <DataTable.Cell>
                 <Button
                   icon="delete"
                   onPress={() => {
-                    console.log(`Deleting pack with id: ${item.idPack}`);
+                    console.log(`Deleting pack with id: ${item.idproduct}`);
                     // Handle the delete action here
                   }}
                 >
@@ -75,8 +81,14 @@ export default function VenteSelect() {
         ) : (
           <DataTable.Row>
             <DataTable.Cell>
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Aucun pack disponible</Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>Aucun Produit disponible</Text>
               </View>
             </DataTable.Cell>
           </DataTable.Row>
