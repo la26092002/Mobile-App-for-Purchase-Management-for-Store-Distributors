@@ -40,11 +40,6 @@ const reducer = (state, action) => {
           produit: [...state.Ventes.produit, action.payload],
         },
       };
-    case "ressetVente":
-      return {
-        ...state,
-        Ventes: { produit: [], pack: [] },
-      };
 
     case "addVentePack":
       return {
@@ -53,6 +48,12 @@ const reducer = (state, action) => {
           ...state.Ventes,
           pack: [...state.Ventes.pack, action.payload],
         },
+      };
+
+    case "ressetVente":
+      return {
+        ...state,
+        Ventes: { produit: [], pack: [] },
       };
     case "getVentes":
       return { ...state, Ventes: action.payload };

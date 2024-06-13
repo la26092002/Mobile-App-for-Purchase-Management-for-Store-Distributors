@@ -61,11 +61,12 @@ export default function CreerVente({ setPart }) {
         <Card style={styles.Card}>
           <Card.Title title="Ajouter une Vente" left={LeftContent} />
           <AddVenteGrid />
+          <VenteSelect />
           <Card.Actions>
             <Button onPress={() => alert(name)}>Ajouter</Button>
           </Card.Actions>
         </Card>
-        <VenteSelect />
+        
       </ScrollView>
     </>
   );

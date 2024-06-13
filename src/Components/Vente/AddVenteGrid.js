@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Button, TextInput, useTheme } from "react-native-paper";
+import { Button, TextInput, shadow, useTheme } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDataContext } from "../../Context/DataContext";
@@ -18,18 +18,19 @@ export default function AddVenteGrid() {
   const [quantitePack, setQuantitePack] = useState("");
   const [quantiteProduct, setQuantiteProduct] = useState("");
 
+  const [nomProduitSelect, setNomProduitSelect] = useState("");
+  const [nomPackSelect, setNomPackSelect] = useState("");
 
   useEffect(() => {
-    console.log("state.TheProducts: ", state.TheProducts);  // Check if pack data is loaded correctly
+    console.log("state.TheProducts: ", state.TheProducts); // Check if pack data is loaded correctly
   }, [state.TheProducts]);
-
 
   const ajouterPack = async () => {
     if (quantitePack.length > 0 && idPack != null) {
       try {
         dispatch({
           type: "addVentePack",
-          payload: { idPack, quantitePack }
+          payload: { idPack, quantitePack, nomPack: nomPackSelect },
         });
         setQuantitePack("");
         setIdPack(null);
@@ -48,7 +49,7 @@ export default function AddVenteGrid() {
       try {
         dispatch({
           type: "addVenteProduit",
-          payload: { idproduct, quantiteProduct },
+          payload: { idproduct, quantiteProduct, nomProduit: nomProduitSelect },
         });
         alert("Product added successfully");
         console.log(`Product added: ${idproduct}/${quantiteProduct}`);
@@ -61,7 +62,7 @@ export default function AddVenteGrid() {
       console.log("Invalid input: Please provide both pack and quantity.");
     }
   };
-  
+
   const renderItem = (item) => (
     <View style={styles.itemR}>
       <Text style={styles.textItem}>{item.nom_produit}</Text>
@@ -87,7 +88,12 @@ export default function AddVenteGrid() {
           style={[
             styles.dropdown,
             styles.item,
-            { backgroundColor: theme.colors.surfaceVariant, width: wp(46) },
+            {
+              backgroundColor: theme.colors.surfaceVariant,
+              width: wp(46),
+              borderBottomWidth: 0.7,
+              borderBottomColor: theme.colors.primary,
+            },
           ]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
@@ -101,7 +107,10 @@ export default function AddVenteGrid() {
           placeholder="Pack Select"
           searchPlaceholder="Search..."
           value={idPack}
-          onChange={(item) => setIdPack(item.id_pack)}
+          onChange={(item) => {
+            setIdPack(item.id_pack);
+            setNomPackSelect(item.nom_produit);
+          }}
           renderLeftIcon={() => (
             <MaterialIcons name="category" size={20} color="black" />
           )}
@@ -128,7 +137,12 @@ export default function AddVenteGrid() {
           style={[
             styles.dropdown,
             styles.item,
-            { backgroundColor: theme.colors.surfaceVariant, width: wp(46) },
+            {
+              backgroundColor: theme.colors.surfaceVariant,
+              width: wp(46),
+              borderBottomWidth: 0.7,
+              borderBottomColor: theme.colors.primary,
+            },
           ]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
@@ -142,7 +156,10 @@ export default function AddVenteGrid() {
           placeholder="Produit Select"
           searchPlaceholder="Search..."
           value={idproduct}
-          onChange={(item) => setIdProduct(item.id_produit)}
+          onChange={(item) => {
+            setIdProduct(item.id_produit);
+            setNomProduitSelect(item.nom_produit);
+          }}
           renderLeftIcon={() => (
             <MaterialIcons name="category" size={20} color="black" />
           )}
@@ -182,14 +199,14 @@ const styles = {
   dropdown: {
     margin: 0,
     height: 60,
-    borderRadius: 0,
+    borderRadius: 5,
     padding: 12,
-    shadowColor: "#000",
+    shadowColor: "red",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 0,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0,
     shadowRadius: 1.41,
     elevation: 2,
   },
@@ -208,6 +225,7 @@ const styles = {
   },
   placeholderStyle: {
     fontSize: 16,
+    border: 0,
   },
   selectedTextStyle: {
     fontSize: 16,

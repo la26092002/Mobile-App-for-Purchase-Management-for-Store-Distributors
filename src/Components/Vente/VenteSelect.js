@@ -18,7 +18,7 @@ export default function VenteSelect() {
         {state.Ventes.pack && state.Ventes.pack.length > 0 ? (
           state.Ventes.pack.map((item, index) => (
             <DataTable.Row key={index}>
-              <DataTable.Cell>{item.idPack}</DataTable.Cell>
+              <DataTable.Cell>{item.nomPack}</DataTable.Cell>
               <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
               <DataTable.Cell>
                 <Button
@@ -63,13 +63,13 @@ export default function VenteSelect() {
         {state.Ventes.produit && state.Ventes.produit.length > 0 ? (
           state.Ventes.produit.map((item, index) => (
             <DataTable.Row key={index}>
-              <DataTable.Cell>{item.idproduct}</DataTable.Cell>
+              <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
               <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
               <DataTable.Cell>
                 <Button
                   icon="delete"
                   onPress={() => {
-                    console.log(`Deleting pack with id: ${item.idproduct}`);
+                    console.log(`Deleting product with id: ${item.idproduct}`);
                     // Handle the delete action here
                   }}
                 >
