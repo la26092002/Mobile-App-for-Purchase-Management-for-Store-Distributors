@@ -30,11 +30,12 @@ export default function CreerVente() {
   const [status, setStatus] = useState(0);
   let Suivant = async () => {
     setStatus(1);
-    setTimeout(function() {
-      console.log("Waited 1 second");
-      setStatus(2);
-  }, 2000);
+    setTimeout(function () {
+      console.log("Waited 2 seconds");
+      setStatus(2); // Move this inside the setTimeout function
+    }, 2000);
   };
+  
   return (
     <>
       <ScrollView style={styles.scrollView}>
@@ -59,7 +60,12 @@ export default function CreerVente() {
         )}
         {status === 2 && (
           <>
-          <SelectFournisseur />
+            <SelectFournisseur setStatus={setStatus} />
+          </>
+        )}
+        {status === 3 && (
+          <>
+            <Text>Done</Text>
           </>
         )}
       </ScrollView>
