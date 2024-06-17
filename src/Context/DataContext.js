@@ -6,7 +6,8 @@ const initialState = {
   pack: [],
   category: [],
   TheProducts: [],
-  Ventes: { produit: [], pack: [], fournisseur: null },
+  Ventes: { produit: [], pack: [], fournisseur: null },//this is when you want to do sell
+  AllVentes: []
 };
 
 // Define the reducer function to handle state transitions
@@ -66,6 +67,10 @@ const reducer = (state, action) => {
       };
     case "getVentes":
       return { ...state, Ventes: action.payload };
+
+      case "getToAllVentes":
+      return { ...state, AllVentes: action.payload };
+      
     default:
       throw new Error();
   }

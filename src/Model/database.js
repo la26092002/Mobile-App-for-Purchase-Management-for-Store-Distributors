@@ -142,9 +142,15 @@ const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
 };
 //Get All vente
 const getVentes = async (db) => {
-  const allRows = await db.getAllAsync("SELECT   v.id_vente, v.packs, v.produits, v.prixTotal ,v.id_fournisseur ,f.nom_fournisseur FROM  vente v JOIN  fournisseur f ON  v.id_fournisseur = f.id_fournisseur");
-  return allRows;
+  try {
+    const allRows = await db.getAllAsync("SELECT * FROM vente JOIN fournisseur ON vente.id_fournisseur = fournisseur.id_fournisseur");
+    return allRows;
+  } catch (error) {
+    console.error("Error getting ventes:", error);
+    return []; // Or handle differently based on your needs
+  }
 };
+
 
 
 export const database = {
@@ -159,5 +165,6 @@ export const database = {
   getPacks,
   insertProduct,
   getProducts,
-  insertVente
+  insertVente,
+  getVentes
 };

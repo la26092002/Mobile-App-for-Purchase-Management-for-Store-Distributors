@@ -21,9 +21,7 @@ export default function AddVenteGrid() {
   const [nomProduitSelect, setNomProduitSelect] = useState("");
   const [nomPackSelect, setNomPackSelect] = useState("");
 
-  useEffect(() => {
-    console.log("state.TheProducts: ", state.TheProducts); // Check if pack data is loaded correctly
-  }, [state.TheProducts]);
+
 
   const ajouterPack = async () => {
     if (quantitePack.length > 0 && idPack != null) {

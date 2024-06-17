@@ -11,7 +11,7 @@ export default function SelectFournisseur({setStatus}) {
     setFournisseur(id_fournisseur)
     dispatch({
         type: "addVenteFournisseur",
-        payload: fournisseur,
+        payload: id_fournisseur,
       });
       setStatus(3)
   }
