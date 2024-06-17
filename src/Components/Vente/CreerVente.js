@@ -20,6 +20,7 @@ import { openDatabase } from "../../SqlLite";
 import AddVenteGrid from "./AddVenteGrid";
 import VenteSelect from "./VenteSelect";
 import SelectFournisseur from "../Fournisseur/SelectFournisseur";
+import DoneVente from "./DoneVente";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />
@@ -65,7 +66,7 @@ export default function CreerVente() {
         )}
         {status === 3 && (
           <>
-            <Text>Done</Text>
+            <DoneVente setStatus={setStatus} />
           </>
         )}
       </ScrollView>

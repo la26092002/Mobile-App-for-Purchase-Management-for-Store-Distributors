@@ -37,6 +37,14 @@ const openDatabase = async () => {
     id_produit INTEGER,
     FOREIGN KEY (id_produit) REFERENCES produit(id_produit)
 );
+CREATE TABLE IF NOT EXISTS vente (
+  id_vente INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  packs TEXT NOT NULL,
+  produits TEXT NOT NULL,
+  prixTotal TEXT NOT NULL,
+  id_fournisseur INTEGER,
+  FOREIGN KEY (id_fournisseur) REFERENCES fournisseur(id_fournisseur)
+);
   `);
   
 
@@ -123,6 +131,20 @@ const getProducts = async (db) => {
   return allRows;
 };
 
+//------------vente--------------------
+//packs TEXT NOT NULL,
+//produits TEXT NOT NULL,
+//prixTotal TEXT NOT NULL,
+//id_fournisseur INTEGER,
+const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
+  let result = await db.runAsync(
+    "INSERT INTO vente (packs,produits,prixTotal,id_fournisseur) VALUES (?,?,?,?)",
+    packs,produits,prixTotal,id_fournisseur
+    
+  );
+  return result.lastInsertRowId;
+};
+
 export const database = {
   openDatabase,
   getUsers,
@@ -134,5 +156,6 @@ export const database = {
   insertPack,
   getPacks,
   insertProduct,
-  getProducts
+  getProducts,
+  insertVente
 };
