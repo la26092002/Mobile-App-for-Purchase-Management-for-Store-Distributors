@@ -34,7 +34,7 @@ export default function ProduitSelect() {
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Nom</DataTable.Title>
-              <DataTable.Title>Prix</DataTable.Title>
+              <DataTable.Title>Prix </DataTable.Title>
               <DataTable.Title>Categorie</DataTable.Title>
               <DataTable.Title>Action</DataTable.Title>
             </DataTable.Header>

@@ -132,10 +132,6 @@ const getProducts = async (db) => {
 };
 
 //------------vente--------------------
-//packs TEXT NOT NULL,
-//produits TEXT NOT NULL,
-//prixTotal TEXT NOT NULL,
-//id_fournisseur INTEGER,
 const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
   let result = await db.runAsync(
     "INSERT INTO vente (packs,produits,prixTotal,id_fournisseur) VALUES (?,?,?,?)",
@@ -144,6 +140,12 @@ const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
   );
   return result.lastInsertRowId;
 };
+//Get All vente
+const getVentes = async (db) => {
+  const allRows = await db.getAllAsync("SELECT   v.id_vente, v.packs, v.produits, v.prixTotal ,v.id_fournisseur ,f.nom_fournisseur FROM  vente v JOIN  fournisseur f ON  v.id_fournisseur = f.id_fournisseur");
+  return allRows;
+};
+
 
 export const database = {
   openDatabase,
