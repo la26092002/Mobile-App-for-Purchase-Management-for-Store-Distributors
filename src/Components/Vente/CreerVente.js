@@ -21,6 +21,7 @@ import AddVenteGrid from "./AddVenteGrid";
 import VenteSelect from "./VenteSelect";
 import SelectFournisseur from "../Fournisseur/SelectFournisseur";
 import DoneVente from "./DoneVente";
+import { useDataContext } from "../../Context/DataContext";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />
@@ -36,6 +37,41 @@ export default function CreerVente() {
       setStatus(2); // Move this inside the setTimeout function
     }, 2000);
   };
+
+
+  const { state, dispatch } = useDataContext();
+  const [prixTotal, setPrixTotal] = useState(0);
+
+  useEffect(() => {
+    async function load() {
+      let totalPrixPacks = state.Ventes.pack.reduce((sum, pack) => {
+        const prix = parseFloat(pack.prix);
+        const quantite = parseFloat(pack.quantitePack);
+        if (!isNaN(prix)) {
+          return sum + (prix*quantite);
+        } else {
+          console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+          return sum;
+        }
+      }, 0);
+    
+      let totalPrixProducts = state.Ventes.produit.reduce((sum, produit) => {
+        const prix = parseFloat(produit.prix);
+        const quantite = parseFloat(produit.quantiteProduct);
+        if (!isNaN(prix)) {
+          return sum + (prix*quantite);
+        } else {
+          console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+          return sum;
+        }
+      }, 0);
+      setPrixTotal(totalPrixProducts+totalPrixPacks)
+    }
+    load();
+    
+  }, [state.Ventes.pack,state.Ventes.produit])
+  
+ 
   
   return (
     <>
@@ -46,6 +82,7 @@ export default function CreerVente() {
             <AddVenteGrid />
             <VenteSelect />
             <Card.Actions>
+              <Text>Prix Total : {prixTotal}</Text>
               <Button onPress={Suivant}>Suivant</Button>
             </Card.Actions>
           </Card>
@@ -66,7 +103,7 @@ export default function CreerVente() {
         )}
         {status === 3 && (
           <>
-            <DoneVente setStatus={setStatus} />
+            <DoneVente prixTotal={prixTotal} setStatus={setStatus} />
           </>
         )}
       </ScrollView>

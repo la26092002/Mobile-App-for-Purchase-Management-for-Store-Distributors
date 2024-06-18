@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   

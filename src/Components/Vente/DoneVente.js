@@ -4,7 +4,7 @@ import { useDataContext } from "../../Context/DataContext";
 import { useTheme } from "react-native-paper";
 import { database } from "../../Model/database";
 
-export default function DoneVente({ setStatus }) {
+export default function DoneVente({ setStatus,prixTotal }) {
   const { state, dispatch } = useDataContext();
   const theme = useTheme();
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function DoneVente({ setStatus }) {
           db,
           JSON.stringify(state.Ventes.pack),
           JSON.stringify(state.Ventes.produit),
-          1000,
+          prixTotal,
           state.Ventes.fournisseur,
         );
 

@@ -13,12 +13,36 @@ export default function SelectFournisseur({ setStatus }) {
       type: "addVenteFournisseur",
       payload: id_fournisseur,
     });
-    //setStatus(3);
+    setStatus(3);
   };
   useEffect(() => {
+    
+    console.log(state.Ventes.produit);
+    let totalPrixPacks = state.Ventes.pack.reduce((sum, pack) => {
+      const prix = parseFloat(pack.prix);
+      const quantite = parseFloat(pack.quantitePack);
+      if (!isNaN(prix)) {
+        return sum + (prix*quantite);
+      } else {
+        console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+        return sum;
+      }
+    }, 0);
+    console.log("Total Price Packs:", totalPrixPacks);
 
-    console.log(state.Ventes.pack)
-  }, []);
+
+    let totalPrixProducts = state.Ventes.produit.reduce((sum, produit) => {
+      const prix = parseFloat(produit.prix);
+      const quantite = parseFloat(produit.quantiteProduct);
+      if (!isNaN(prix)) {
+        return sum + (prix*quantite);
+      } else {
+        console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+        return sum;
+      }
+    }, 0);
+    console.log("Total Price produits:", totalPrixProducts);
+  }, [state.Ventes.pack]);
 
   return (
     <>
