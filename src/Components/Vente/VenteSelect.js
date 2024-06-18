@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDataContext } from "../../Context/DataContext";
 
 export default function VenteSelect() {
-  const { state } = useDataContext();
+  const { state, dispatch } = useDataContext();
 
   return (
     <>
@@ -21,15 +21,14 @@ export default function VenteSelect() {
               <DataTable.Cell>{item.nomPack}</DataTable.Cell>
               <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
               <DataTable.Cell>
-                <Button
-                  icon="delete"
-                  onPress={() => {
-                    console.log(`Deleting pack with id: ${item.idPack}`);
-                    // Handle the delete action here
-                  }}
-                >
-                  Supprimer
-                </Button>
+              <Button
+                icon="delete"
+                onPress={() => {
+                  dispatch({ type: "deleteVentePack", payload: index });
+                }}
+              >
+                Supprimer
+              </Button>
               </DataTable.Cell>
             </DataTable.Row>
           ))
@@ -66,15 +65,14 @@ export default function VenteSelect() {
               <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
               <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
               <DataTable.Cell>
-                <Button
-                  icon="delete"
-                  onPress={() => {
-                    console.log(`Deleting product with id: ${item.idproduct}`);
-                    // Handle the delete action here
-                  }}
-                >
-                  Supprimer
-                </Button>
+              <Button
+                icon="delete"
+                onPress={() => {
+                  dispatch({ type: "deleteVenteProduit", payload: index });
+                }}
+              >
+                Supprimer
+              </Button>
               </DataTable.Cell>
             </DataTable.Row>
           ))

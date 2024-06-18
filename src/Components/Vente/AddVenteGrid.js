@@ -19,16 +19,17 @@ export default function AddVenteGrid() {
   const [quantiteProduct, setQuantiteProduct] = useState("");
 
   const [nomProduitSelect, setNomProduitSelect] = useState("");
+  const [prixProduitSelect, setPrixProduitSelect] = useState(null);
+
   const [nomPackSelect, setNomPackSelect] = useState("");
-
-
+  const [prixPackSelect, setPrixPackSelect] = useState(null);
 
   const ajouterPack = async () => {
     if (quantitePack.length > 0 && idPack != null) {
       try {
         dispatch({
           type: "addVentePack",
-          payload: { idPack, quantitePack, nomPack: nomPackSelect },
+          payload: { idPack, quantitePack, nomPack: nomPackSelect,prix: prixPackSelect },
         });
         setQuantitePack("");
         setIdPack(null);
@@ -41,16 +42,12 @@ export default function AddVenteGrid() {
   };
 
   const ajouterProduits = async () => {
-    console.log("ajouterProduits function called");
-    console.log(`idproduct: ${idproduct}, quantiteProduct: ${quantiteProduct}`);
     if (quantiteProduct.length > 0 && idproduct != null) {
       try {
         dispatch({
           type: "addVenteProduit",
-          payload: { idproduct, quantiteProduct, nomProduit: nomProduitSelect },
+          payload: { idproduct, quantiteProduct, nomProduit: nomProduitSelect, prix: prixProduitSelect },
         });
-        alert("Product added successfully");
-        console.log(`Product added: ${idproduct}/${quantiteProduct}`);
         setQuantiteProduct("");
         setIdProduct(null);
       } catch (error) {
@@ -108,6 +105,7 @@ export default function AddVenteGrid() {
           onChange={(item) => {
             setIdPack(item.id_pack);
             setNomPackSelect(item.nom_produit);
+            setPrixPackSelect(item.prix)
           }}
           renderLeftIcon={() => (
             <MaterialIcons name="category" size={20} color="black" />
@@ -157,6 +155,7 @@ export default function AddVenteGrid() {
           onChange={(item) => {
             setIdProduct(item.id_produit);
             setNomProduitSelect(item.nom_produit);
+            setPrixProduitSelect(item.prix_produit)
           }}
           renderLeftIcon={() => (
             <MaterialIcons name="category" size={20} color="black" />

@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react";
 import { Button, DataTable } from "react-native-paper";
 import { useDataContext } from "../../Context/DataContext";
 
-export default function SelectFournisseur({setStatus}) {
+export default function SelectFournisseur({ setStatus }) {
   const { state, dispatch } = useDataContext();
 
   const [fournisseur, setFournisseur] = useState(null);
   let presser = (id_fournisseur) => {
-    setFournisseur(id_fournisseur)
+    setFournisseur(id_fournisseur);
     dispatch({
-        type: "addVenteFournisseur",
-        payload: id_fournisseur,
-      });
-      setStatus(3)
-  }
+      type: "addVenteFournisseur",
+      payload: id_fournisseur,
+    });
+    //setStatus(3);
+  };
   useEffect(() => {
-    console.log("fournisseur : "+fournisseur)
-  }, [fournisseur])
-  
+
+    console.log(state.Ventes.pack)
+  }, []);
+
   return (
     <>
       <DataTable>

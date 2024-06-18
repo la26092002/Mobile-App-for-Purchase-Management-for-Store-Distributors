@@ -60,6 +60,24 @@ const reducer = (state, action) => {
         },
       };
 
+    case "deleteVenteProduit":
+      return {
+        ...state,
+        Ventes: {
+          ...state.Ventes,
+          produit: state.Ventes.produit.filter((_, index) => index !== action.payload),
+        },
+      };
+
+      case "deleteVentePack":
+      return {
+        ...state,
+        Ventes: {
+          ...state.Ventes,
+          pack: state.Ventes.pack.filter((_, index) => index !== action.payload),
+        },
+      };
+
     case "ressetVente":
       return {
         ...state,
@@ -67,6 +85,9 @@ const reducer = (state, action) => {
       };
     case "getVentes":
       return { ...state, Ventes: action.payload };
+
+
+
 
       case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
