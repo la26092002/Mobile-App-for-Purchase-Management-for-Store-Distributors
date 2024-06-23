@@ -33,9 +33,9 @@ export default function CreerVente() {
   let Suivant = async () => {
     setStatus(1);
     setTimeout(function () {
-      console.log("Waited 2 seconds");
+      console.log("Waited 1 seconds");
       setStatus(2); // Move this inside the setTimeout function
-    }, 2000);
+    }, 1000);
   };
 
 
