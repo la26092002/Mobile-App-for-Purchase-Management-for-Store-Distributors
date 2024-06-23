@@ -9,16 +9,16 @@ import {
   Card,
   Avatar,
 } from "react-native-paper";
-import { useDataContext } from "../../Context/DataContext";
-import { database } from "../../Model/database";
+import { useDataContext } from "../../../Context/DataContext";
+import { database } from "../../../Model/database";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import ModifierVente from "./Modifier/ModifierSelectVente";
-import ModifierAddVente from "./Modifier/ModifierAddVente";
-import ModifierSelectVente from "./Modifier/ModifierSelectVente";
+import ModifierVente from "../Modifier/ModifierSelectVente";
+import ModifierAddVente from "../Modifier/ModifierAddVente";
+import ModifierSelectVente from "../Modifier/ModifierSelectVente";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />

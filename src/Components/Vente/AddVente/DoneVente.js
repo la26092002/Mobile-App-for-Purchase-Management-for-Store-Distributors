@@ -1,8 +1,8 @@
 import { View, Text } from "react-native";
 import React, { useEffect } from "react";
-import { useDataContext } from "../../Context/DataContext";
 import { useTheme } from "react-native-paper";
-import { database } from "../../Model/database";
+import { useDataContext } from "../../../Context/DataContext";
+import { database } from "../../../Model/database";
 
 export default function DoneVente({ setStatus,prixTotal }) {
   const { state, dispatch } = useDataContext();

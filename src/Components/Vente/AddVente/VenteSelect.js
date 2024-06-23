@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { DataTable, Button, Text } from "react-native-paper";
 import React, { useEffect } from "react";
-import { useDataContext } from "../../Context/DataContext";
+import { useDataContext } from "../../../Context/DataContext";
 
 export default function VenteSelect() {
   const { state, dispatch } = useDataContext();

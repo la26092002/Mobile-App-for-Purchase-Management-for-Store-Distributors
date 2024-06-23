@@ -7,7 +7,7 @@ import {
 import { Button, TextInput, shadow, useTheme } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useDataContext } from "../../Context/DataContext";
+import { useDataContext } from "../../../Context/DataContext";
 
 export default function AddVenteGrid() {
   const { state, dispatch } = useDataContext();

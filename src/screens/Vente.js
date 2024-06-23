@@ -11,8 +11,8 @@ import CategorySelect from "../Components/Produit/CategorySelect";
 import PackSelect from "../Components/Produit/PackSelect";
 import ProductAdd from "../Components/Produit/ProductAdd";
 import SegmentedButtonProduct2 from "../Components/SegmentedButtonProduct2";
-import CreerVente from "../Components/Vente/CreerVente";
-import SelectAllVente from "../Components/Vente/SelectAllVente"
+import CreerVente from "../Components/Vente/AddVente/CreerVente";
+import SelectAllVente from "../Components/Vente/DispalyVente/SelectAllVente"
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 export default function Vente() {
   const [part, setPart] = React.useState(0);

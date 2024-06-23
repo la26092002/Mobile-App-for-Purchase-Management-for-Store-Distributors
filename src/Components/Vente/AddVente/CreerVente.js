@@ -16,12 +16,12 @@ import {
 } from "react-native-responsive-screen";
 
 import { useTheme } from "react-native-paper";
-import { openDatabase } from "../../SqlLite";
+import { openDatabase } from "../../../SqlLite";
 import AddVenteGrid from "./AddVenteGrid";
 import VenteSelect from "./VenteSelect";
-import SelectFournisseur from "../Fournisseur/SelectFournisseur";
+import SelectFournisseur from "../../Fournisseur/SelectFournisseur";
 import DoneVente from "./DoneVente";
-import { useDataContext } from "../../Context/DataContext";
+import { useDataContext } from "../../../Context/DataContext";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="archive-arrow-down-outline" />

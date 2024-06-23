@@ -7,7 +7,8 @@ const initialState = {
   category: [],
   TheProducts: [],
   Ventes: { produit: [], pack: [], fournisseur: null },//this is when you want to do sell
-  AllVentes: []
+  AllVentes: [],
+  Modifier:{}
 };
 
 // Define the reducer function to handle state transitions
