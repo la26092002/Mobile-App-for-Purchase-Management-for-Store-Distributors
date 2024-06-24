@@ -6,6 +6,9 @@ import { useDataContext } from "../../../Context/DataContext";
 export default function ModifierSelectVente() {
   const { state, dispatch } = useDataContext();
 
+  const packs = state.Modifier && state.Modifier.packs ? JSON.parse(state.Modifier.packs) : [];
+  const produits = state.Modifier && state.Modifier.produits ? JSON.parse(state.Modifier.produits) : [];
+
   return (
     <>
       <DataTable>
@@ -15,20 +18,20 @@ export default function ModifierSelectVente() {
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
 
-        {state.Ventes.pack && state.Ventes.pack.length > 0 ? (
-          state.Ventes.pack.map((item, index) => (
+        {packs.length > 0 ? (
+          packs.map((item, index) => (
             <DataTable.Row key={index}>
               <DataTable.Cell>{item.nomPack}</DataTable.Cell>
               <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
               <DataTable.Cell>
-              <Button
-                icon="delete"
-                onPress={() => {
-                  dispatch({ type: "deleteVentePack", payload: index });
-                }}
-              >
-                Supprimer
-              </Button>
+                <Button
+                  icon="delete"
+                  onPress={() => {
+                    dispatch({ type: "deleteVentePack", payload: index });
+                  }}
+                >
+                  Supprimer
+                </Button>
               </DataTable.Cell>
             </DataTable.Row>
           ))
@@ -49,9 +52,6 @@ export default function ModifierSelectVente() {
         )}
       </DataTable>
 
-      {
-        //i need this part of product to modify
-      }
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Produit</DataTable.Title>
@@ -59,20 +59,20 @@ export default function ModifierSelectVente() {
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
 
-        {state.Ventes.produit && state.Ventes.produit.length > 0 ? (
-          state.Ventes.produit.map((item, index) => (
+        {produits.length > 0 ? (
+          produits.map((item, index) => (
             <DataTable.Row key={index}>
               <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
               <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
               <DataTable.Cell>
-              <Button
-                icon="delete"
-                onPress={() => {
-                  dispatch({ type: "deleteVenteProduit", payload: index });
-                }}
-              >
-                Supprimer
-              </Button>
+                <Button
+                  icon="delete"
+                  onPress={() => {
+                    dispatch({ type: "deleteVenteProduit", payload: index });
+                  }}
+                >
+                  Supprimer
+                </Button>
               </DataTable.Cell>
             </DataTable.Row>
           ))

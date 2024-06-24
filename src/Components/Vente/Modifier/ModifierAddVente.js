@@ -24,17 +24,26 @@ export default function ModifierAddVente() {
   const [nomPackSelect, setNomPackSelect] = useState("");
   const [prixPackSelect, setPrixPackSelect] = useState(null);
 
+
+
   const ajouterPack = async () => {
     if (quantitePack.length > 0 && idPack != null) {
       try {
+        const packs = state.Modifier && state.Modifier.packs ? JSON.parse(state.Modifier.packs) : [];
+        
+        // Create the new pack object
+        const newPack = {
+          idPack,
+          quantitePack,
+          nomPack: nomPackSelect,
+          prix: prixPackSelect
+        };
+        
+        // Push the new pack object into the packs array
+        packs.push(newPack);
         dispatch({
           type: "ModifieraddVentePack",
-          payload: {
-            idPack,
-            quantitePack,
-            nomPack: nomPackSelect,
-            prix: prixPackSelect,
-          },
+          payload: JSON.stringify(packs)
         });
         setQuantitePack("");
         setIdPack(null);
@@ -49,14 +58,18 @@ export default function ModifierAddVente() {
   const ajouterProduits = async () => {
     if (quantiteProduct.length > 0 && idproduct != null) {
       try {
-        dispatch({
-          type: "ModifieraddVenteProduit",
-          payload: {
-            idproduct,
+        const produits = state.Modifier && state.Modifier.produits ? JSON.parse(state.Modifier.produits) : [];
+
+        const newProduit = {
+          idproduct,
             quantiteProduct,
             nomProduit: nomProduitSelect,
             prix: prixProduitSelect,
-          },
+        };
+        produits.push(newProduit);
+        dispatch({
+          type: "ModifieraddVenteProduit",
+          payload: JSON.stringify(produits),
         });
         setQuantiteProduct("");
         setIdProduct(null);

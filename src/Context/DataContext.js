@@ -6,9 +6,9 @@ const initialState = {
   pack: [],
   category: [],
   TheProducts: [],
-  Ventes: { produit: [], pack: [], fournisseur: null },//this is when you want to do sell
+  Ventes: { produit: [], pack: [], fournisseur: null }, //this is when you want to do sell
   AllVentes: [],
-  Modifier:{}
+  Modifier: {},
 };
 
 // Define the reducer function to handle state transitions
@@ -66,16 +66,20 @@ const reducer = (state, action) => {
         ...state,
         Ventes: {
           ...state.Ventes,
-          produit: state.Ventes.produit.filter((_, index) => index !== action.payload),
+          produit: state.Ventes.produit.filter(
+            (_, index) => index !== action.payload
+          ),
         },
       };
 
-      case "deleteVentePack":
+    case "deleteVentePack":
       return {
         ...state,
         Ventes: {
           ...state.Ventes,
-          pack: state.Ventes.pack.filter((_, index) => index !== action.payload),
+          pack: state.Ventes.pack.filter(
+            (_, index) => index !== action.payload
+          ),
         },
       };
 
@@ -87,12 +91,29 @@ const reducer = (state, action) => {
     case "getVentes":
       return { ...state, Ventes: action.payload };
 
-
-
-
-      case "getToAllVentes":
+    case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
-      
+
+      case "Modifier":
+        return {
+          ...state,
+          Modifier: action.payload,
+        };
+        case "ModifieraddVentePack":
+          return {
+            ...state,
+            Modifier: {...state.Modifier, packs : action.payload},
+          };
+
+          case "ModifieraddVenteProduit":
+          return {
+            ...state,
+            Modifier: {...state.Modifier, produits : action.payload},
+          };
+
+          
+        
+//return { ...state, Ventes: [...state.Ventes, action.payload] };
     default:
       throw new Error();
   }

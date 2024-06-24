@@ -56,6 +56,13 @@ export default function SelectAllVente() {
 
   const showModifierModal = (vente) => {
     console.log("Show Modifier Modal for Vente:", vente); // Debug vente data
+   
+    
+    dispatch({
+      type: "Modifier",
+      payload: vente,
+    });
+
     setSelectedVente(vente);
     setModifierVisible(true);
   };
@@ -69,6 +76,10 @@ export default function SelectAllVente() {
     setModifierVisible(false);
     setSelectedVente(null);
   };
+
+  const save = () => {
+    console.log(state.Modifier)
+  }
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -160,10 +171,10 @@ export default function SelectAllVente() {
           <ScrollView>
             <Card style={styles.Card}>
               <Card.Title title="Modifier une Vente" left={LeftContent} />
-              <ModifierAddVente />
-              <ModifierSelectVente />
+              <ModifierAddVente selectedVente={selectedVente} />
+              <ModifierSelectVente selectedVente={selectedVente} />
               {/* Add form fields to modify the selected vente here */}
-              <Button onPress={hideModifierModal}>Save</Button>
+              <Button onPress={save}>Save</Button>
               <Button onPress={hideModifierModal}>Cancel</Button>
             </Card>
           </ScrollView>
