@@ -150,6 +150,19 @@ const getVentes = async (db) => {
     return []; // Or handle differently based on your needs
   }
 };
+//id_vente INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+//packs TEXT NOT NULL,
+//produits TEXT NOT NULL,
+//prixTotal TEXT NOT NULL,
+//id_fournisseur INTEGER,
+
+const modifierVente = async (db, packs, produits, prixTotal, id_fournisseur, id_vente) => {
+  let result = await db.runAsync(
+    "UPDATE vente SET packs = ?, produits = ?, prixTotal=?, id_fournisseur=? WHERE id_vente=?",
+    packs, produits, prixTotal, id_fournisseur, id_vente // Added comma after id_fournisseur
+  );
+  return result;
+};
 
 
 
@@ -166,5 +179,6 @@ export const database = {
   insertProduct,
   getProducts,
   insertVente,
-  getVentes
+  getVentes,
+  modifierVente
 };

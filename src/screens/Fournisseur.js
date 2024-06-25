@@ -1,13 +1,28 @@
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+  TextInput,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Card, Text, TextInput } from "react-native-paper";
+import {
+  Button,
+  DataTable,
+  Modal,
+  Portal,
+  Text,
+  Provider as PaperProvider,
+  Card,
+  Avatar,
+} from "react-native-paper";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { DataTable } from "react-native-paper";
 import { database } from "../Model/database";
 import { useDataContext } from "../Context/DataContext";
+import CardModifier from "../Components/Fournisseur/Modifier/CardModifier";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="account-hard-hat" />
@@ -19,6 +34,7 @@ export default function Fournisseur() {
 
   const [data, setData] = React.useState([]);
   const { state, dispatch } = useDataContext();
+
   let ajouterFournisseur = async () => {
     if (name.length > 0) {
       try {
@@ -29,12 +45,28 @@ export default function Fournisseur() {
           type: "addProduct",
           payload: { id_fournisseur: reslt, nom_fournisseur: name },
         });
-        //console.log(reslt)
         setName("");
       } catch (error) {
         console.error("Error inserting fournisseur:", error);
       }
     }
+  };
+
+  const [modifierVisible, setModifierVisible] = useState(false);
+  const [selectedFournisseur, setSelectedFournisseur] = useState(null);
+
+  let Modifier = (id_fournisseur, nom_fournisseur) => {
+    setSelectedFournisseur({ id_fournisseur, nom_fournisseur });
+    setModifierVisible(true);
+  };
+
+  const hideModifierModal = () => {
+    setModifierVisible(false);
+  };
+
+  const save = () => {
+    // Implement the save logic here
+    setModifierVisible(false);
   };
 
   useEffect(() => {
@@ -47,7 +79,6 @@ export default function Fournisseur() {
           type: "getProducts",
           payload: fournisseurs,
         });
-        // console.log(await database.getFournisseur(db))
       } catch (error) {
         console.error("Error select fournisseur:", error);
       }
@@ -60,69 +91,84 @@ export default function Fournisseur() {
   }, [state.products]);
 
   return (
-    <View>
-      {!fournis && (
-        <Button onPress={() => setFournis(true)}>Ajouter Fournisseur</Button>
-      )}
-      {fournis && (
-        <Card style={styles.Card}>
-          <Card.Title title="Ajouter un Fournisseur" left={LeftContent} />
-          <TextInput
-            label="Name"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <Card.Actions>
-            <Button onPress={() => setFournis(false)}>Cancel</Button>
-            <Button onPress={ajouterFournisseur}>Ajouter</Button>
-          </Card.Actions>
-        </Card>
-      )}
+    <PaperProvider>
+      <View>
+        {!fournis && (
+          <Button onPress={() => setFournis(true)}>Ajouter Fournisseur</Button>
+        )}
+        {fournis && (
+          <Card style={styles.Card}>
+            <Card.Title title="Ajouter un Fournisseur" left={LeftContent} />
+            <TextInput
+              label="Name"
+              value={name}
+              onChangeText={(text) => setName(text)}
+            />
+            <Card.Actions>
+              <Button onPress={() => setFournis(false)}>Cancel</Button>
+              <Button onPress={ajouterFournisseur}>Ajouter</Button>
+            </Card.Actions>
+          </Card>
+        )}
 
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <DataTable>
-            <DataTable.Header>
-              <DataTable.Title>Name</DataTable.Title>
-              <DataTable.Title>Action</DataTable.Title>
-            </DataTable.Header>
+        <Portal>
+          <Modal
+            visible={modifierVisible}
+            onDismiss={hideModifierModal}
+            contentContainerStyle={styles.containerStyle}
+          >
+            <ScrollView>
+              <CardModifier selectedFournisseur={selectedFournisseur} />
+            </ScrollView>
+          </Modal>
+        </Portal>
 
-            {state.products.map((fournisseur) => (
-              <DataTable.Row key={fournisseur.id_fournisseur}>
-                <DataTable.Cell>{fournisseur.nom_fournisseur}</DataTable.Cell>
-                <DataTable.Cell>
-                  <Button
-                    icon="eyedropper-variant"
-                    mode="text"
-                    onPress={() => alert("Pressed")}
-                  >
-                    Modifier
-                  </Button>
-                </DataTable.Cell>
-                <DataTable.Cell>
-                  <Button
-                    icon="eyedropper-variant"
-                    mode="text"
-                    onPress={() => alert("Pressed")}
-                  >
-                    Vente
-                  </Button>
-                </DataTable.Cell>
-              </DataTable.Row>
-            ))}
-          </DataTable>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={styles.scrollView}>
+            <DataTable>
+              <DataTable.Header>
+                <DataTable.Title>Name</DataTable.Title>
+                <DataTable.Title>Action</DataTable.Title>
+              </DataTable.Header>
+
+              {state.products.map((fournisseur) => (
+                <DataTable.Row key={fournisseur.id_fournisseur}>
+                  <DataTable.Cell>{fournisseur.nom_fournisseur}</DataTable.Cell>
+                  <DataTable.Cell>
+                    <Button
+                      icon="eyedropper-variant"
+                      mode="text"
+                      onPress={() =>
+                        Modifier(
+                          fournisseur.id_fournisseur,
+                          fournisseur.nom_fournisseur
+                        )
+                      }
+                    >
+                      Modifier
+                    </Button>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))}
+            </DataTable>
+          </ScrollView>
+        </SafeAreaView>
+      </View>
+    </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
   Card: {
-    marginHorizontal: 10,
+    marginHorizontal: 0,
   },
   scrollView: {
     marginHorizontal: 10,
     height: hp(50),
+  },
+  containerStyle: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 20,
   },
 });

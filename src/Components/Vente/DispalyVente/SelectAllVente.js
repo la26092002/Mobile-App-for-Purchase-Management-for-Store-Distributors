@@ -28,7 +28,6 @@ export default function SelectAllVente() {
   const { state, dispatch } = useDataContext();
   const [visible, setVisible] = useState(false);
   const [modifierVisible, setModifierVisible] = useState(false);
-
   const [selectedVente, setSelectedVente] = useState(null);
 
   useEffect(() => {
@@ -56,13 +55,10 @@ export default function SelectAllVente() {
 
   const showModifierModal = (vente) => {
     console.log("Show Modifier Modal for Vente:", vente); // Debug vente data
-   
-    
     dispatch({
       type: "Modifier",
       payload: vente,
     });
-
     setSelectedVente(vente);
     setModifierVisible(true);
   };
@@ -77,9 +73,26 @@ export default function SelectAllVente() {
     setSelectedVente(null);
   };
 
-  const save = () => {
-    console.log(state.Modifier)
-  }
+  const save = async () => {
+    console.log(state.Modifier);
+    try {
+      let db = await database.openDatabase();
+      let reslt = await database.modifierVente(
+        db,
+        JSON.stringify(state.Modifier.packs),
+        JSON.stringify(state.Modifier.produits),
+        state.Modifier.prixTotal,
+        state.Modifier.id_fournisseur,
+        state.Modifier.id_vente
+      );
+      console.log(reslt);
+      // Reset state or form fields if needed
+      // For example, if you have a name field, reset it here
+      // setName(""); // Uncomment if setName is defined and needed
+    } catch (error) {
+      console.error("Error update vente:", error);
+    }
+  };
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -102,29 +115,51 @@ export default function SelectAllVente() {
                   <DataTable.Title>Pack</DataTable.Title>
                   <DataTable.Title>Quantité</DataTable.Title>
                 </DataTable.Header>
-
-                {selectedVente?.packs && selectedVente?.packs.length > 0 ? (
-                  JSON.parse(selectedVente.packs).map((item, index) => (
-                    <DataTable.Row key={index}>
-                      <DataTable.Cell>{item.nomPack}</DataTable.Cell>
-                      <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
-                    </DataTable.Row>
-                  ))
-                ) : (
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <View
-                        style={{
-                          flex: 1,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>Aucun pack disponible</Text>
-                      </View>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                )}
+                {(() => {
+                  try {
+                    const packs = JSON.parse(selectedVente?.packs || "[]");
+                    if (packs.length > 0) {
+                      return packs.map((item, index) => (
+                        <DataTable.Row key={index}>
+                          <DataTable.Cell>{item.nomPack}</DataTable.Cell>
+                          <DataTable.Cell>{item.quantitePack}</DataTable.Cell>
+                        </DataTable.Row>
+                      ));
+                    } else {
+                      return (
+                        <DataTable.Row>
+                          <DataTable.Cell>
+                            <View
+                              style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Text>Aucun pack disponible</Text>
+                            </View>
+                          </DataTable.Cell>
+                        </DataTable.Row>
+                      );
+                    }
+                  } catch (error) {
+                    return (
+                      <DataTable.Row>
+                        <DataTable.Cell>
+                          <View
+                            style={{
+                              flex: 1,
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text>Erreur de chargement des packs</Text>
+                          </View>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    );
+                  }
+                })()}
               </DataTable>
 
               <DataTable>
@@ -132,31 +167,53 @@ export default function SelectAllVente() {
                   <DataTable.Title>Produit</DataTable.Title>
                   <DataTable.Title>Quantité</DataTable.Title>
                 </DataTable.Header>
-
-                {selectedVente?.produits &&
-                selectedVente?.produits.length > 0 ? (
-                  JSON.parse(selectedVente.produits).map((item, index) => (
-                    <DataTable.Row key={index}>
-                      <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
-                      <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
-                    </DataTable.Row>
-                  ))
-                ) : (
-                  <DataTable.Row>
-                    <DataTable.Cell>
-                      <View
-                        style={{
-                          flex: 1,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Text>Aucun Produit disponible</Text>
-                      </View>
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                )}
+                {(() => {
+                  try {
+                    const produits = JSON.parse(selectedVente?.produits || "[]");
+                    if (produits.length > 0) {
+                      return produits.map((item, index) => (
+                        <DataTable.Row key={index}>
+                          <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
+                          <DataTable.Cell>{item.quantiteProduit}</DataTable.Cell>
+                        </DataTable.Row>
+                      ));
+                    } else {
+                      return (
+                        <DataTable.Row>
+                          <DataTable.Cell>
+                            <View
+                              style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Text>Aucun produit disponible</Text>
+                            </View>
+                          </DataTable.Cell>
+                        </DataTable.Row>
+                      );
+                    }
+                  } catch (error) {
+                    return (
+                      <DataTable.Row>
+                        <DataTable.Cell>
+                          <View
+                            style={{
+                              flex: 1,
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text>Erreur de chargement des produits</Text>
+                          </View>
+                        </DataTable.Cell>
+                      </DataTable.Row>
+                    );
+                  }
+                })()}
               </DataTable>
+
               <Button onPress={hideModal}>Imprimer</Button>
               <Button onPress={hideModal}>Close</Button>
             </Card>
@@ -173,7 +230,6 @@ export default function SelectAllVente() {
               <Card.Title title="Modifier une Vente" left={LeftContent} />
               <ModifierAddVente selectedVente={selectedVente} />
               <ModifierSelectVente selectedVente={selectedVente} />
-              {/* Add form fields to modify the selected vente here */}
               <Button onPress={save}>Save</Button>
               <Button onPress={hideModifierModal}>Cancel</Button>
             </Card>
