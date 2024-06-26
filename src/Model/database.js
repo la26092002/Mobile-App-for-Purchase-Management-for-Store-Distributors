@@ -130,6 +130,18 @@ const getProducts = async (db) => {
   const allRows = await db.getAllAsync("SELECT   p.id_produit, p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category");
   return allRows;
 };
+//id_produit INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+//nom_produit TEXT NOT NULL,
+//prix_produit TEXT NOT NULL,
+//id_category INTEGER,
+const modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category) => {
+  let result = await db.runAsync(
+    "UPDATE produit SET nom_produit = ?, prix_produit = ?, id_category=? WHERE id_produit=?",
+    nom_produit, prix_produit, id_category, id_produit 
+  );
+  return result;
+};
+
 
 //------------vente--------------------
 const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
@@ -150,11 +162,6 @@ const getVentes = async (db) => {
     return []; // Or handle differently based on your needs
   }
 };
-//id_vente INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-//packs TEXT NOT NULL,
-//produits TEXT NOT NULL,
-//prixTotal TEXT NOT NULL,
-//id_fournisseur INTEGER,
 
 const modifierVente = async (db, packs, produits, prixTotal, id_fournisseur, id_vente) => {
   let result = await db.runAsync(
@@ -180,5 +187,6 @@ export const database = {
   getProducts,
   insertVente,
   getVentes,
-  modifierVente
+  modifierVente,
+  modifierProduit
 };

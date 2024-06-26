@@ -44,7 +44,7 @@ export default function ProduitSelect() {
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
           {selectedProduct && (
             <>
-              <CardModifierProduit selectedProduct={selectedProduct}/>
+              <CardModifierProduit setVisible={setVisible} selectedProduct={selectedProduct}/>
             </>
           )}
         </Modal>

@@ -19,20 +19,27 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useDataContext } from "../../../Context/DataContext";
+import { database } from "../../../Model/database";
 
 const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="account-hard-hat" />
 );
 
-export default function CardModifierProduit({selectedProduct}) {
+export default function CardModifierProduit({setVisible,selectedProduct}) {
   const { state, dispatch } = useDataContext();
   let theme = useTheme();
 
   const [category, setCategory] = useState("");
   const [idCategory, setIdCategory] = useState(null);
+  
+  const [id_produit, setId_produit] = useState(selectedProduct.id_produit);
   const [name, setName] = useState(selectedProduct.nom_produit);
   const [price, setPrice] = useState(""+selectedProduct.prix_produit);
 
+  useEffect(() => {
+    console.log(selectedProduct)
+  }, [])
+  
   const renderItem = (item) => {
     return (
       <View style={styles.item}>
@@ -44,9 +51,22 @@ export default function CardModifierProduit({selectedProduct}) {
     );
   };
 
-  let modifierFournisseur = () => {
-    console.log("hhh", idCategory, category,name,price);
+  let modifierFournisseur = async () => {
+    console.log("hhh",id_produit ,idCategory, category,name,price);
     console.log(selectedProduct);
+    //modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category)
+    try {
+      if (category.length>0 && name.length>0 && price.length>0) {
+        let db = await database.openDatabase();
+        let products = await database.modifierProduit(db, id_produit, name, price, idCategory);
+  
+        //update in context
+        setVisible(false)
+      }
+     
+    } catch (error) {
+      console.error("Error select products:", error);
+    }
   };
 
   return (
