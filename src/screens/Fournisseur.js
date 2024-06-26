@@ -3,7 +3,6 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,7 +13,7 @@ import {
   Text,
   Provider as PaperProvider,
   Card,
-  Avatar,
+  Avatar,TextInput,
 } from "react-native-paper";
 import {
   widthPercentageToDP as wp,

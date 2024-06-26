@@ -13,9 +13,12 @@ export default function ProduitSelect() {
   const { state, dispatch } = useDataContext();
   const [visible, setVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const showModal = (product) => {
+  const [item, setItem] = useState(null);
+  
+  const showModal = (product,index) => {
     setSelectedProduct(product);
+    setItem(index)
+
     setVisible(true);
   };
   const hideModal = () => setVisible(false);
@@ -44,7 +47,7 @@ export default function ProduitSelect() {
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
           {selectedProduct && (
             <>
-              <CardModifierProduit setVisible={setVisible} selectedProduct={selectedProduct}/>
+              <CardModifierProduit item={item} setVisible={setVisible} selectedProduct={selectedProduct}/>
             </>
           )}
         </Modal>
@@ -57,8 +60,8 @@ export default function ProduitSelect() {
           <DataTable.Title>Categorie</DataTable.Title>
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
-        {state.TheProducts.map((product) => (
-          <DataTable.Row key={product.id_produit}>
+        {state.TheProducts.map((product, index) => (
+          <DataTable.Row key={index}>
             <DataTable.Cell>{product.nom_produit}</DataTable.Cell>
             <DataTable.Cell>{product.prix_produit}</DataTable.Cell>
             <DataTable.Cell>{product.nom_category}</DataTable.Cell>
@@ -66,7 +69,7 @@ export default function ProduitSelect() {
               <Button
                 icon="eyedropper-variant"
                 mode="text"
-                onPress={() => showModal(product)}
+                onPress={() => showModal(product,index)}
               >
                 Modifier
               </Button>

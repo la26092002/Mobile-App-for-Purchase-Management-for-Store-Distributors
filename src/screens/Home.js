@@ -56,7 +56,6 @@ const Home = () => {
     },
     { key: "albums", title: "Produit", focusedIcon: "package-variant-closed" },
     { key: "recents", title: "Fournisseur", focusedIcon: "account-hard-hat" },
-    { key: "parametre", title: "paramètre", focusedIcon: "cog" },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({

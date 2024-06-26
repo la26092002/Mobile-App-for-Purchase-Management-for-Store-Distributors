@@ -31,6 +31,21 @@ const reducer = (state, action) => {
     case "getTheProduct":
       return { ...state, TheProducts: action.payload };
 
+    case "updateTheProduct":
+      return {
+        ...state,
+        TheProducts: state.TheProducts.map((product, index) =>
+          index === action.payload.item ? action.payload.newProduct : product
+        ),
+      };
+    case "removeTheProduct":
+      return {
+        ...state,
+        TheProducts: state.TheProducts.filter(
+          (_, index) => index !== action.payload
+        ),
+      };
+
     case "addVente":
       return { ...state, Ventes: [...state.Ventes, action.payload] };
 
@@ -94,26 +109,24 @@ const reducer = (state, action) => {
     case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
 
-      case "Modifier":
-        return {
-          ...state,
-          Modifier: action.payload,
-        };
-        case "ModifieraddVentePack":
-          return {
-            ...state,
-            Modifier: {...state.Modifier, packs : action.payload},
-          };
+    case "Modifier":
+      return {
+        ...state,
+        Modifier: action.payload,
+      };
+    case "ModifieraddVentePack":
+      return {
+        ...state,
+        Modifier: { ...state.Modifier, packs: action.payload },
+      };
 
-          case "ModifieraddVenteProduit":
-          return {
-            ...state,
-            Modifier: {...state.Modifier, produits : action.payload},
-          };
+    case "ModifieraddVenteProduit":
+      return {
+        ...state,
+        Modifier: { ...state.Modifier, produits: action.payload },
+      };
 
-          
-        
-//return { ...state, Ventes: [...state.Ventes, action.payload] };
+    //return { ...state, Ventes: [...state.Ventes, action.payload] };
     default:
       throw new Error();
   }

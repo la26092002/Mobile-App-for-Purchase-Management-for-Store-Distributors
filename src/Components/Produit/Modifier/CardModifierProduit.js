@@ -25,7 +25,7 @@ const LeftContent = (props) => (
   <Avatar.Icon {...props} icon="account-hard-hat" />
 );
 
-export default function CardModifierProduit({setVisible,selectedProduct}) {
+export default function CardModifierProduit({item,setVisible,selectedProduct}) {
   const { state, dispatch } = useDataContext();
   let theme = useTheme();
 
@@ -51,15 +51,24 @@ export default function CardModifierProduit({setVisible,selectedProduct}) {
     );
   };
 
-  let modifierFournisseur = async () => {
-    console.log("hhh",id_produit ,idCategory, category,name,price);
-    console.log(selectedProduct);
+  let modifierProduit = async () => {
+    //console.log("hhh",id_produit ,idCategory, category,name,price);
+    //console.log(selectedProduct);
     //modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category)
     try {
       if (category.length>0 && name.length>0 && price.length>0) {
         let db = await database.openDatabase();
         let products = await database.modifierProduit(db, id_produit, name, price, idCategory);
   
+        let newProduct = {
+          "id_produit": id_produit,
+         "nom_category": category,
+          "nom_produit": name, 
+          "prix_produit": price
+        }
+          dispatch({ type: "updateTheProduct", payload: { item, newProduct } });
+
+        console.log(state.TheProducts)
         //update in context
         setVisible(false)
       }
@@ -69,6 +78,27 @@ export default function CardModifierProduit({setVisible,selectedProduct}) {
     }
   };
 
+  let supprimmerProduit = async () => {
+    //console.log("hhh",id_produit ,idCategory, category,name,price);
+    //console.log(selectedProduct);
+    //modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category)
+    try {
+        let db = await database.openDatabase();
+        let products = await database.suprimmerProduit(db, id_produit);
+  
+       
+        dispatch({ type: "removeTheProduct", payload: item });
+
+        console.log(state.TheProducts)
+        //update in context
+        setVisible(false)
+     
+    } catch (error) {
+      console.error("Error select products:", error);
+    }
+  };
+
+  
   return (
     <View>
       <Card style={styles.Card}>
@@ -110,7 +140,9 @@ export default function CardModifierProduit({setVisible,selectedProduct}) {
           renderItem={renderItem}
         />
         <Card.Actions>
-          <Button onPress={modifierFournisseur}>Modifier</Button>
+        
+          <Button onPress={supprimmerProduit}>supprimmer</Button>
+          <Button onPress={modifierProduit}>Modifier</Button>
         </Card.Actions>
       </Card>
     </View>

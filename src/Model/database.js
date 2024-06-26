@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -27,6 +27,7 @@ const openDatabase = async () => {
       nom_produit TEXT NOT NULL,
       prix_produit TEXT NOT NULL,
       id_category INTEGER,
+      status BOOLEAN DEFAULT false,
       FOREIGN KEY (id_category) REFERENCES category(id_category)
   );
 
@@ -127,7 +128,7 @@ const insertProduct = async (db, nom_produit, prix_produit,id_category) => {
 };
 //Get All packs
 const getProducts = async (db) => {
-  const allRows = await db.getAllAsync("SELECT   p.id_produit, p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category");
+  const allRows = await db.getAllAsync("SELECT   p.id_produit, p.nom_produit, p.prix_produit, c.nom_category FROM  produit p JOIN  category c ON  p.id_category = c.id_category where p.status= false ");
   return allRows;
 };
 //id_produit INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -141,6 +142,16 @@ const modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_cat
   );
   return result;
 };
+
+const suprimmerProduit = async (db, id_produit) => {//
+  let result = await db.runAsync(
+    "UPDATE produit SET status = ?  WHERE id_produit=?",
+    true, id_produit 
+  );
+  return result;
+};
+
+
 
 
 //------------vente--------------------
@@ -188,5 +199,6 @@ export const database = {
   insertVente,
   getVentes,
   modifierVente,
-  modifierProduit
+  modifierProduit,
+  suprimmerProduit
 };
