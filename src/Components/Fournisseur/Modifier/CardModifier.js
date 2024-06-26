@@ -27,7 +27,17 @@ export default function CardModifier({selectedFournisseur}) {
       setName(selectedFournisseur.nom_fournisseur)
     
   }, [selectedFournisseur])
-  
+  let modifierFournisseur = ()=>{
+    console.log("hhh")
+    try {
+      if (name.length > 0) {
+        console.log("name : "+name)
+        console.log("id_fournisseur : "+selectedFournisseur.id_fournisseur)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <View>
       <Card style={styles.Card}>
@@ -38,7 +48,6 @@ export default function CardModifier({selectedFournisseur}) {
           onChangeText={(text) => setName(text)}
         />
         <Card.Actions>
-          <Button >Cancel</Button>
           <Button onPress={modifierFournisseur} >Modifier</Button>
         </Card.Actions>
       </Card>

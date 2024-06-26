@@ -166,7 +166,7 @@ export default function PackSelect() {
                     icon="eyedropper-variant"
                     mode="text"
                   >
-                    Modifier
+                    Suprimmer
                   </Button>
                 </DataTable.Cell>
               </DataTable.Row>

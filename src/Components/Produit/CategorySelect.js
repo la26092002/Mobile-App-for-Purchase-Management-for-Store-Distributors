@@ -12,7 +12,6 @@ const LeftContent = (props) => <Avatar.Icon {...props} icon="shape" />;
 export default function CategorySelect({}) {
   const [name, setName] = React.useState("");
   const [categorieStatus, setCategorieStatus] = React.useState(true);
-  
 
   const { state, dispatch } = useDataContext();
   async function addCategorie() {
@@ -54,61 +53,48 @@ export default function CategorySelect({}) {
     <>
       <SafeAreaView style={styles.Bodyiew}>
         <ScrollView style={styles.scrollView}>
-        {
-        categorieStatus && <Button onPress={() => setCategorieStatus(!categorieStatus)}>Ajouter Produit</Button>
-       } 
-       {
-        !categorieStatus && (
-          <Card style={styles.Card}>
-          <Card.Title title="Ajouter une Categorie" left={LeftContent} />
-          <TextInput
-            label="Nom de Categorie"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <Card.Actions>
-          <Button onPress={() => setCategorieStatus(!categorieStatus)}>Cancel</Button>
-            <Button onPress={addCategorie}>Ajouter</Button>
-          </Card.Actions>
-        </Card>
-        )
-       }
-         
+          {categorieStatus && (
+            <Button onPress={() => setCategorieStatus(!categorieStatus)}>
+              Ajouter Produit
+            </Button>
+          )}
+          {!categorieStatus && (
+            <Card style={styles.Card}>
+              <Card.Title title="Ajouter une Categorie" left={LeftContent} />
+              <TextInput
+                label="Nom de Categorie"
+                value={name}
+                onChangeText={(text) => setName(text)}
+              />
+              <Card.Actions>
+                <Button onPress={() => setCategorieStatus(!categorieStatus)}>
+                  Cancel
+                </Button>
+                <Button onPress={addCategorie}>Ajouter</Button>
+              </Card.Actions>
+            </Card>
+          )}
 
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Categorie</DataTable.Title>
               <DataTable.Title>Action</DataTable.Title>
             </DataTable.Header>
-           {
-            state.category.map((category, index) => (
+            {state.category.map((category, index) => (
               <DataTable.Row key={category.id_category}>
-              <DataTable.Cell>{category.nom_category}</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Modifier
-                </Button>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="eyedropper-variant"
-                  mode="text"
-                  onPress={() => alert("Pressed")}
-                >
-                  Supprimer
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            ))
-           }
-            
-           
-           
-            
+                <DataTable.Cell>{category.nom_category}</DataTable.Cell>
+
+                <DataTable.Cell>
+                  <Button
+                    icon="eyedropper-variant"
+                    mode="text"
+                    onPress={() => alert("Pressed")}
+                  >
+                    Supprimer
+                  </Button>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
           </DataTable>
         </ScrollView>
       </SafeAreaView>
@@ -116,7 +102,6 @@ export default function CategorySelect({}) {
   );
 }
 const styles = StyleSheet.create({
-  
   Bodyiew: {
     height: hp(70),
     width: wp(100),
