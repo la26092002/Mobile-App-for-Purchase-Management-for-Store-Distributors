@@ -171,10 +171,11 @@ export default function SelectAllVente() {
                   try {
                     const produits = JSON.parse(selectedVente?.produits || "[]");
                     if (produits.length > 0) {
+                      console.log(produits)
                       return produits.map((item, index) => (
                         <DataTable.Row key={index}>
                           <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
-                          <DataTable.Cell>{item.quantiteProduit}</DataTable.Cell>
+                          <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
                         </DataTable.Row>
                       ));
                     } else {
