@@ -49,6 +49,32 @@ export default function CategorySelect({}) {
     }
     load();
   }, []);
+
+
+  let supprimmerCategorie = async (index,id_category) => {
+    //console.log("hhh",id_produit ,idCategory, category,name,price);
+    //console.log(selectedProduct);
+    //modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category)
+    try {
+        let db = await database.openDatabase();
+        let pack = await database.suprimmerCategory(db, id_category);
+  
+       
+      //  dispatch({ type: "removeTheProduct", payload: item });
+
+        // Update the state and context
+        dispatch({
+          type: "removeCategorie",
+          payload: index,
+        });
+        console.log(state.pack)
+        //update in context
+        //setVisible(false)
+     
+    } catch (error) {
+      console.error("Error select products:", error);
+    }
+  };
   return (
     <>
       <SafeAreaView style={styles.Bodyiew}>
@@ -88,7 +114,7 @@ export default function CategorySelect({}) {
                   <Button
                     icon="eyedropper-variant"
                     mode="text"
-                    onPress={() => alert("Pressed")}
+                    onPress={() => supprimmerCategorie(index,category.id_category)}
                   >
                     Supprimer
                   </Button>

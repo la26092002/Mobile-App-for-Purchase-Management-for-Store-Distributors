@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -18,7 +18,8 @@ const openDatabase = async () => {
   
   CREATE TABLE IF NOT EXISTS category (
       id_category INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      nom_category TEXT NOT NULL
+      nom_category TEXT NOT NULL,
+      status BOOLEAN DEFAULT false
   );
   
   
@@ -36,6 +37,7 @@ const openDatabase = async () => {
     quantite_pack TEXT NOT NULL,
     prix TEXT NOT NULL,
     id_produit INTEGER,
+    status BOOLEAN DEFAULT false,
     FOREIGN KEY (id_produit) REFERENCES produit(id_produit)
 );
 CREATE TABLE IF NOT EXISTS vente (
@@ -95,8 +97,17 @@ const insertCategorie = async (db, nom) => {
 };
 //Get All categories
 const getCategories = async (db) => {
-  const allRows = await db.getAllAsync("SELECT * FROM category");
+  const allRows = await db.getAllAsync("SELECT * FROM category  where status= false");
   return allRows;
+};
+
+
+const suprimmerCategory = async (db, id_category) => {//
+  let result = await db.runAsync(
+    "UPDATE category SET status = ?  WHERE id_category=?",
+    true, id_category 
+  );
+  return result;
 };
 
 //-------------pack----------------
@@ -110,10 +121,16 @@ const insertPack = async (db, id_produit, quantite,prix) => {
 };
 //Get All packs
 const getPacks = async (db) => {
-  const allRows = await db.getAllAsync("SELECT k.id_pack, p.nom_produit, k.quantite_pack,k.prix FROM pack k JOIN  produit p ON   k.id_produit = p.id_produit");
+  const allRows = await db.getAllAsync("SELECT k.id_pack, p.nom_produit, k.quantite_pack,k.prix FROM pack k JOIN  produit p ON   k.id_produit = p.id_produit where k.status= false");
   return allRows;
 };
-
+const suprimmerPack = async (db, id_pack) => {//
+  let result = await db.runAsync(
+    "UPDATE pack SET status = ?  WHERE id_pack=?",
+    true, id_pack 
+  );
+  return result;
+};
 
 //---------------produit---------------------
 
@@ -200,5 +217,7 @@ export const database = {
   getVentes,
   modifierVente,
   modifierProduit,
-  suprimmerProduit
+  suprimmerProduit,
+  suprimmerPack,
+  suprimmerCategory
 };

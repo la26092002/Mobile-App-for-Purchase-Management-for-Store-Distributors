@@ -89,6 +89,31 @@ export default function PackSelect() {
       </View>
     );
   };
+
+  let supprimmerPack = async (index,id_pack) => {
+    //console.log("hhh",id_produit ,idCategory, category,name,price);
+    //console.log(selectedProduct);
+    //modifierProduit = async (db, id_produit, nom_produit, prix_produit, id_category)
+    try {
+        let db = await database.openDatabase();
+        let pack = await database.suprimmerPack(db, id_pack);
+  
+       
+      //  dispatch({ type: "removeTheProduct", payload: item });
+
+        // Update the state and context
+        dispatch({
+          type: "removePack",
+          payload: index,
+        });
+        console.log(state.pack)
+        //update in context
+        //setVisible(false)
+     
+    } catch (error) {
+      console.error("Error select products:", error);
+    }
+  };
   return (
     <>
       <SafeAreaView style={styles.Bodyiew}>
@@ -165,6 +190,7 @@ export default function PackSelect() {
                   <Button
                     icon="eyedropper-variant"
                     mode="text"
+                    onPress={() => supprimmerPack(index, pack.id_pack)}
                   >
                     Suprimmer
                   </Button>

@@ -22,10 +22,22 @@ const reducer = (state, action) => {
       return { ...state, category: [...state.category, action.payload] };
     case "getCategories":
       return { ...state, category: action.payload };
+    case "removeCategorie":
+      return {
+        ...state,
+        category: state.category.filter((_, index) => index !== action.payload),
+      };
+
     case "addPack":
       return { ...state, pack: [...state.pack, action.payload] };
     case "getPack":
       return { ...state, pack: action.payload };
+    case "removePack":
+      return {
+        ...state,
+        pack: state.pack.filter((_, index) => index !== action.payload),
+      };
+
     case "addTheProduct":
       return { ...state, TheProducts: [...state.TheProducts, action.payload] };
     case "getTheProduct":
