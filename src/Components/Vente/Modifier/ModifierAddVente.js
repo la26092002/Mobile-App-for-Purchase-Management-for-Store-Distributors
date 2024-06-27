@@ -10,6 +10,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useDataContext } from "../../../Context/DataContext";
 
 export default function ModifierAddVente() {
+
   const { state, dispatch } = useDataContext();
   const theme = useTheme();
 
@@ -26,6 +27,21 @@ export default function ModifierAddVente() {
 
 
 
+  useEffect(() => {
+    console.log("state : ",state.AllVentes)
+  }, [])
+
+ {
+  /*
+   {"id_fournisseur": 2,
+   "id_vente": 1,
+    "nom_fournisseur": "Moh",
+     "packs": "",
+     "prixTotal": "100", 
+     "produits": "",
+   "status": 0}
+  */
+ }
   const ajouterPack = async () => {
     if (quantitePack.length > 0 && idPack != null) {
       try {

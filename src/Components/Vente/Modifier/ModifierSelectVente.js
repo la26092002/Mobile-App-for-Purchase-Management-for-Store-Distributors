@@ -9,6 +9,22 @@ export default function ModifierSelectVente() {
   const packs = state.Modifier && state.Modifier.packs ? JSON.parse(state.Modifier.packs) : [];
   const produits = state.Modifier && state.Modifier.produits ? JSON.parse(state.Modifier.produits) : [];
 
+  const handleDeletePack = (index) => {
+    const updatedPacks = packs.filter((_, packIndex) => packIndex !== index);
+    dispatch({
+      type: "ModifieraddVentePack",
+      payload: JSON.stringify(updatedPacks),
+    });
+  };
+
+  const handleDeleteProduit = (index) => {
+    const updatedProduits = produits.filter((_, produitIndex) => produitIndex !== index);
+    dispatch({
+      type: "ModifieraddVenteProduit",
+      payload: JSON.stringify(updatedProduits),
+    });
+  };
+
   return (
     <>
       <DataTable>
@@ -26,9 +42,7 @@ export default function ModifierSelectVente() {
               <DataTable.Cell>
                 <Button
                   icon="delete"
-                  onPress={() => {
-                    dispatch({ type: "deleteVentePack", payload: index });
-                  }}
+                  onPress={() => handleDeletePack(index)}
                 >
                   Supprimer
                 </Button>
@@ -67,9 +81,7 @@ export default function ModifierSelectVente() {
               <DataTable.Cell>
                 <Button
                   icon="delete"
-                  onPress={() => {
-                    dispatch({ type: "deleteVenteProduit", payload: index });
-                  }}
+                  onPress={() => handleDeleteProduit(index)}
                 >
                   Supprimer
                 </Button>

@@ -140,6 +140,21 @@ const reducer = (state, action) => {
     case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
 
+      case "UpdateAllVentes":
+        return {
+          ...state,
+          AllVentes: state.AllVentes.map((product, index) =>
+            index === action.payload.item
+              ? {
+                  ...product,
+                  packs: action.payload.packs,
+                  produits: action.payload.produits
+                }
+              : product
+          )
+        };
+
+      
     case "Modifier":
       return {
         ...state,
@@ -157,6 +172,8 @@ const reducer = (state, action) => {
         Modifier: { ...state.Modifier, produits: action.payload },
       };
 
+
+      
     //return { ...state, Ventes: [...state.Ventes, action.payload] };
     default:
       throw new Error();

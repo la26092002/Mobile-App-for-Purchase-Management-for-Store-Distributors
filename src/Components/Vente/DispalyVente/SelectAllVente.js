@@ -30,6 +30,9 @@ export default function SelectAllVente() {
   const [modifierVisible, setModifierVisible] = useState(false);
   const [selectedVente, setSelectedVente] = useState(null);
 
+
+  
+  const [item, setItem] = useState(null);
   useEffect(() => {
     async function load() {
       try {
@@ -47,14 +50,13 @@ export default function SelectAllVente() {
     load();
   }, [dispatch]);
 
-  const showModal = (vente) => {
-    console.log("Show Modal for Vente:", vente); // Debug vente data
+  const showModal = (vente,index) => {
+    setItem(index)
     setSelectedVente(vente);
     setVisible(true);
   };
 
   const showModifierModal = (vente) => {
-    console.log("Show Modifier Modal for Vente:", vente); // Debug vente data
     dispatch({
       type: "Modifier",
       payload: vente,
@@ -74,21 +76,25 @@ export default function SelectAllVente() {
   };
 
   const save = async () => {
-    console.log(state.Modifier);
     try {
       let db = await database.openDatabase();
-      let reslt = await database.modifierVente(
-        db,
-        JSON.stringify(state.Modifier.packs),
-        JSON.stringify(state.Modifier.produits),
-        state.Modifier.prixTotal,
-        state.Modifier.id_fournisseur,
-        state.Modifier.id_vente
-      );
-      console.log(reslt);
-      // Reset state or form fields if needed
-      // For example, if you have a name field, reset it here
-      // setName(""); // Uncomment if setName is defined and needed
+      await database.modifierVente(db, state.Modifier.packs,
+      state.Modifier.produits,
+       "100", 
+       state.Modifier.id_fournisseur,
+       state.Modifier.id_vente)
+
+       dispatch({
+        type: "UpdateAllVentes",
+        payload: {
+          item,
+          packs : state.Modifier.packs,
+          produits : state.Modifier.produits
+        },
+      });
+      setModifierVisible(false);
+
+      console.log("yes : ");
     } catch (error) {
       console.error("Error update vente:", error);
     }
@@ -169,13 +175,17 @@ export default function SelectAllVente() {
                 </DataTable.Header>
                 {(() => {
                   try {
-                    const produits = JSON.parse(selectedVente?.produits || "[]");
+                    const produits = JSON.parse(
+                      selectedVente?.produits || "[]"
+                    );
                     if (produits.length > 0) {
-                      console.log(produits)
+                      console.log(produits);
                       return produits.map((item, index) => (
                         <DataTable.Row key={index}>
                           <DataTable.Cell>{item.nomProduit}</DataTable.Cell>
-                          <DataTable.Cell>{item.quantiteProduct}</DataTable.Cell>
+                          <DataTable.Cell>
+                            {item.quantiteProduct}
+                          </DataTable.Cell>
                         </DataTable.Row>
                       ));
                     } else {
@@ -231,7 +241,7 @@ export default function SelectAllVente() {
               <Card.Title title="Modifier une Vente" left={LeftContent} />
               <ModifierAddVente selectedVente={selectedVente} />
               <ModifierSelectVente selectedVente={selectedVente} />
-              <Button onPress={save}>Save</Button>
+              <Button onPress={() => save()}>Save</Button>
               <Button onPress={hideModifierModal}>Cancel</Button>
             </Card>
           </ScrollView>
@@ -244,7 +254,7 @@ export default function SelectAllVente() {
           <DataTable.Title>Prix Total</DataTable.Title>
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
-        {state.AllVentes.map((vente) => (
+        {state.AllVentes.map((vente,index) => (
           <DataTable.Row key={vente.id_vente}>
             <DataTable.Cell>{vente.nom_fournisseur}</DataTable.Cell>
             <DataTable.Cell>{vente.prixTotal}</DataTable.Cell>
@@ -252,7 +262,7 @@ export default function SelectAllVente() {
               <Button
                 icon="eyedropper-variant"
                 mode="text"
-                onPress={() => showModal(vente)}
+                onPress={() => showModal(vente,index)}
               >
                 Afficher
               </Button>
