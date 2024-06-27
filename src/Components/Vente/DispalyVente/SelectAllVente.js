@@ -30,8 +30,6 @@ export default function SelectAllVente() {
   const [modifierVisible, setModifierVisible] = useState(false);
   const [selectedVente, setSelectedVente] = useState(null);
 
-
-  
   const [item, setItem] = useState(null);
   useEffect(() => {
     async function load() {
@@ -50,8 +48,8 @@ export default function SelectAllVente() {
     load();
   }, [dispatch]);
 
-  const showModal = (vente,index) => {
-    setItem(index)
+  const showModal = (vente, index) => {
+    setItem(index);
     setSelectedVente(vente);
     setVisible(true);
   };
@@ -75,23 +73,55 @@ export default function SelectAllVente() {
     setSelectedVente(null);
   };
 
+
+
+
+
   const save = async () => {
     try {
+      let packs = JSON.parse(state.Modifier.packs)
+      let totalPrixPacks = packs.reduce((sum, pack) => {
+        const prix = parseFloat(pack.prix);
+        const quantite = parseFloat(pack.quantitePack);
+        if (!isNaN(prix)) {
+          return sum + (prix*quantite);
+        } else {
+          console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+          return sum;
+        }
+      }, 0);
+      let produits = JSON.parse(state.Modifier.produits)
+      let totalPrixProducts = produits.reduce((sum, produit) => {
+        const prix = parseFloat(produit.prix);
+        const quantite = parseFloat(produit.quantiteProduct);
+        if (!isNaN(prix)) {
+          return sum + (prix*quantite);
+        } else {
+          console.error(`Invalid price for pack ${pack.idPack}: ${pack.prix}`);
+          return sum;
+        }
+      }, 0);
       let db = await database.openDatabase();
-      await database.modifierVente(db, state.Modifier.packs,
-      state.Modifier.produits,
-       "100", 
-       state.Modifier.id_fournisseur,
-       state.Modifier.id_vente)
+      await database.modifierVente(
+        db,
+        state.Modifier.packs,
+        state.Modifier.produits,
+        totalPrixProducts+totalPrixPacks,
+        state.Modifier.id_fournisseur,
+        state.Modifier.id_vente
+      );
 
-       dispatch({
+      dispatch({
         type: "UpdateAllVentes",
         payload: {
           item,
-          packs : state.Modifier.packs,
-          produits : state.Modifier.produits
+          prixTotal:totalPrixProducts+totalPrixPacks,
+          packs: state.Modifier.packs,
+          produits: state.Modifier.produits,
         },
       });
+
+
       setModifierVisible(false);
 
       console.log("yes : ");
@@ -113,7 +143,7 @@ export default function SelectAllVente() {
           <ScrollView>
             <Card style={styles.Card}>
               <Card.Title title="Afficher une Vente" left={LeftContent} />
-              <Text>Details for Vente ID: {selectedVente?.id_vente}</Text>
+              <Text>Vente ID: {selectedVente?.id_vente}</Text>
               <Text>Nom Fournisseur: {selectedVente?.nom_fournisseur}</Text>
               <Text>Prix Total: {selectedVente?.prixTotal}</Text>
               <DataTable>
@@ -254,7 +284,7 @@ export default function SelectAllVente() {
           <DataTable.Title>Prix Total</DataTable.Title>
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
-        {state.AllVentes.map((vente,index) => (
+        {state.AllVentes.map((vente, index) => (
           <DataTable.Row key={vente.id_vente}>
             <DataTable.Cell>{vente.nom_fournisseur}</DataTable.Cell>
             <DataTable.Cell>{vente.prixTotal}</DataTable.Cell>
@@ -262,7 +292,7 @@ export default function SelectAllVente() {
               <Button
                 icon="eyedropper-variant"
                 mode="text"
-                onPress={() => showModal(vente,index)}
+                onPress={() => showModal(vente, index)}
               >
                 Afficher
               </Button>

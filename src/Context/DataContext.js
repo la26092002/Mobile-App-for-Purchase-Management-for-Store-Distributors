@@ -147,6 +147,7 @@ const reducer = (state, action) => {
             index === action.payload.item
               ? {
                   ...product,
+                  prixTotal:action.payload.prixTotal,
                   packs: action.payload.packs,
                   produits: action.payload.produits
                 }
