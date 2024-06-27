@@ -18,6 +18,25 @@ const reducer = (state, action) => {
       return { ...state, products: [...state.products, action.payload] };
     case "getProducts":
       return { ...state, products: action.payload };
+    case "updateFournisseur":
+      return {
+        ...state,
+        products: state.products.map((fournisseur, index) =>
+          index === action.payload.index
+            ? {
+                id_fournisseur: action.payload.id_fournisseur,
+                nom_fournisseur: action.payload.name,
+                status: 0,
+              }
+            : fournisseur
+        ),
+      };
+      case "removeFournisseur":
+        return {
+          ...state,
+          products: state.products.filter((_, index) => index !== action.payload),
+        };
+
     case "addCategorie":
       return { ...state, category: [...state.category, action.payload] };
     case "getCategories":

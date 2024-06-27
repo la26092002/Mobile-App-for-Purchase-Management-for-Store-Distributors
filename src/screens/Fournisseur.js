@@ -54,10 +54,12 @@ export default function Fournisseur() {
   const [modifierVisible, setModifierVisible] = useState(false);
   const [selectedFournisseur, setSelectedFournisseur] = useState(null);
 
-  let Modifier = (id_fournisseur, nom_fournisseur) => {
-    setSelectedFournisseur({ id_fournisseur, nom_fournisseur });
+  let Modifier = ( index,id_fournisseur, nom_fournisseur) => {
+    console.log("Modifier called with:", { id_fournisseur, nom_fournisseur });
+    setSelectedFournisseur({ index,id_fournisseur, nom_fournisseur });
     setModifierVisible(true);
   };
+  
 
   const hideModifierModal = () => {
     setModifierVisible(false);
@@ -117,7 +119,7 @@ export default function Fournisseur() {
             contentContainerStyle={styles.containerStyle}
           >
             <ScrollView>
-              <CardModifier selectedFournisseur={selectedFournisseur} />
+              <CardModifier setModifierVisible={setModifierVisible} selectedFournisseur={selectedFournisseur} />
             </ScrollView>
           </Modal>
         </Portal>
@@ -130,7 +132,7 @@ export default function Fournisseur() {
                 <DataTable.Title>Action</DataTable.Title>
               </DataTable.Header>
 
-              {state.products.map((fournisseur) => (
+              {state.products.map((fournisseur,index) => (
                 <DataTable.Row key={fournisseur.id_fournisseur}>
                   <DataTable.Cell>{fournisseur.nom_fournisseur}</DataTable.Cell>
                   <DataTable.Cell>
@@ -139,6 +141,7 @@ export default function Fournisseur() {
                       mode="text"
                       onPress={() =>
                         Modifier(
+                          index,
                           fournisseur.id_fournisseur,
                           fournisseur.nom_fournisseur
                         )

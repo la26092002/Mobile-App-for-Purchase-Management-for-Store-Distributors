@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { SegmentedButtons } from 'react-native-paper';
 export default function SegmentedButtonProduct2({setPart}) {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = React.useState(0);
     useEffect(() => {
       setPart(value)
     }, [value])

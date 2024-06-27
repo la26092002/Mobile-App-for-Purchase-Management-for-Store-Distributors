@@ -13,7 +13,7 @@ import ProductAdd from "../Components/Produit/ProductAdd";
 
 const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 export default function Product({ navigation }) {
-  const [part, setPart] = React.useState(0);
+  const [part, setPart] = React.useState(1);
   const [name, setName] = React.useState("");
   return (
     <View style={styles.Container}>

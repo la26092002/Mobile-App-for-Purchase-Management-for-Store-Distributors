@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -13,7 +13,8 @@ const openDatabase = async () => {
   
   CREATE TABLE IF NOT EXISTS fournisseur (
       id_fournisseur INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      nom_fournisseur TEXT NOT NULL
+      nom_fournisseur TEXT NOT NULL,
+      status BOOLEAN DEFAULT false
   );
   
   CREATE TABLE IF NOT EXISTS category (
@@ -83,8 +84,25 @@ const insertFournisseur = async (db, nom) => {
 };
 //Get All fournisseur
 const getFournisseur = async (db) => {
-  const allRows = await db.getAllAsync("SELECT * FROM fournisseur");
+  const allRows = await db.getAllAsync("SELECT * FROM fournisseur where status=false");
   return allRows;
+};
+
+
+const updateFournisseur = async (db, id_fournisseur,nom_fournisseur) => {
+  let result = await db.runAsync(
+    "UPDATE fournisseur SET nom_fournisseur = ? WHERE id_fournisseur=?",
+    nom_fournisseur, id_fournisseur
+  );
+  return result;
+};
+
+const suprimmerFournisseur = async (db, id_fournisseur) => {//
+  let result = await db.runAsync(
+    "UPDATE fournisseur SET status = ? WHERE id_fournisseur=?",
+    true, id_fournisseur 
+  );
+  return result;
 };
 
 //-------------categorie----------------
@@ -219,5 +237,7 @@ export const database = {
   modifierProduit,
   suprimmerProduit,
   suprimmerPack,
-  suprimmerCategory
+  suprimmerCategory,
+  updateFournisseur,
+  suprimmerFournisseur
 };
