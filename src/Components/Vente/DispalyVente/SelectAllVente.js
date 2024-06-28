@@ -278,6 +278,7 @@ export default function SelectAllVente() {
         </Modal>
       </Portal>
 
+      <ScrollView style={styles.scrollView}>
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Nom</DataTable.Title>
@@ -309,13 +310,14 @@ export default function SelectAllVente() {
           </DataTable.Row>
         ))}
       </DataTable>
+      </ScrollView>
     </PaperProvider>
   );
 }
 
 const styles = StyleSheet.create({
   scrollView: {
-    height: hp(80),
+    height: hp(70),
   },
   Card: {
     marginHorizontal: wp(0),
