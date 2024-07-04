@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useMemo, useReducer } from "react";
 
 // Define the initial state
 const initialState = {
@@ -31,11 +31,11 @@ const reducer = (state, action) => {
             : fournisseur
         ),
       };
-      case "removeFournisseur":
-        return {
-          ...state,
-          products: state.products.filter((_, index) => index !== action.payload),
-        };
+    case "removeFournisseur":
+      return {
+        ...state,
+        products: state.products.filter((_, index) => index !== action.payload),
+      };
 
     case "addCategorie":
       return { ...state, category: [...state.category, action.payload] };
@@ -140,22 +140,21 @@ const reducer = (state, action) => {
     case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
 
-      case "UpdateAllVentes":
-        return {
-          ...state,
-          AllVentes: state.AllVentes.map((product, index) =>
-            index === action.payload.item
-              ? {
-                  ...product,
-                  prixTotal:action.payload.prixTotal,
-                  packs: action.payload.packs,
-                  produits: action.payload.produits
-                }
-              : product
-          )
-        };
+    case "UpdateAllVentes":
+      return {
+        ...state,
+        AllVentes: state.AllVentes.map((product, index) =>
+          index === action.payload.item
+            ? {
+                ...product,
+                prixTotal: action.payload.prixTotal,
+                packs: action.payload.packs,
+                produits: action.payload.produits,
+              }
+            : product
+        ),
+      };
 
-      
     case "Modifier":
       return {
         ...state,
@@ -173,8 +172,6 @@ const reducer = (state, action) => {
         Modifier: { ...state.Modifier, produits: action.payload },
       };
 
-
-      
     //return { ...state, Ventes: [...state.Ventes, action.payload] };
     default:
       throw new Error();
@@ -187,11 +184,9 @@ export const DataContext = createContext();
 // Create a component that will provide the context
 export const DataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   return (
-    <DataContext.Provider value={{ state, dispatch }}>
-      {children}
-    </DataContext.Provider>
+    <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>
   );
 };
 

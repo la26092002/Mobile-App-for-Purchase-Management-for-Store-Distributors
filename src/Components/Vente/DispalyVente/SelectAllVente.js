@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Button,
   DataTable,
@@ -29,55 +29,35 @@ export default function SelectAllVente() {
   const [visible, setVisible] = useState(false);
   const [modifierVisible, setModifierVisible] = useState(false);
   const [selectedVente, setSelectedVente] = useState(null);
-
   const [item, setItem] = useState(null);
-  useEffect(() => {
-    async function load() {
-      try {
-        let db = await database.openDatabase();
-        let ventes = await database.getVentes(db);
-        console.log("Fetched Ventes:", ventes); // Debug fetched data
-        dispatch({
-          type: "getToAllVentes",
-          payload: ventes,
-        });
-      } catch (error) {
-        console.error("Error select ventes:", error);
-      }
-    }
-    load();
-  }, [dispatch]);
 
-  const showModal = (vente, index) => {
+
+  const showModal = useCallback((vente, index) => {
     setItem(index);
     setSelectedVente(vente);
     setVisible(true);
-  };
+  }, []);
 
-  const showModifierModal = (vente) => {
+  const showModifierModal = useCallback((vente) => {
     dispatch({
       type: "Modifier",
       payload: vente,
     });
     setSelectedVente(vente);
     setModifierVisible(true);
-  };
+  }, [dispatch]);
 
-  const hideModal = () => {
+  const hideModal = useCallback(() => {
     setVisible(false);
     setSelectedVente(null);
-  };
+  }, []);
 
-  const hideModifierModal = () => {
+  const hideModifierModal = useCallback(() => {
     setModifierVisible(false);
     setSelectedVente(null);
-  };
+  }, []);
 
-
-
-
-
-  const save = async () => {
+  const save = useCallback(async () => {
     try {
       let packs = JSON.parse(state.Modifier.packs)
       let totalPrixPacks = packs.reduce((sum, pack) => {
@@ -106,7 +86,7 @@ export default function SelectAllVente() {
         db,
         state.Modifier.packs,
         state.Modifier.produits,
-        totalPrixProducts+totalPrixPacks,
+        totalPrixProducts + totalPrixPacks,
         state.Modifier.id_fournisseur,
         state.Modifier.id_vente
       );
@@ -115,20 +95,17 @@ export default function SelectAllVente() {
         type: "UpdateAllVentes",
         payload: {
           item,
-          prixTotal:totalPrixProducts+totalPrixPacks,
+          prixTotal: totalPrixProducts + totalPrixPacks,
           packs: state.Modifier.packs,
           produits: state.Modifier.produits,
         },
       });
 
-
       setModifierVisible(false);
-
-      console.log("yes : ");
     } catch (error) {
       console.error("Error update vente:", error);
     }
-  };
+  }, [state.Modifier, dispatch, item]);
 
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
@@ -283,7 +260,8 @@ export default function SelectAllVente() {
         <DataTable.Header>
           <DataTable.Title>Nom</DataTable.Title>
           <DataTable.Title>Prix Total</DataTable.Title>
-          <DataTable.Title>Action</DataTable.Title>
+          <DataTable.Title>Afficher</DataTable.Title>
+          <DataTable.Title>Modifier</DataTable.Title>
         </DataTable.Header>
         {state.AllVentes.map((vente, index) => (
           <DataTable.Row key={vente.id_vente}>
@@ -294,18 +272,14 @@ export default function SelectAllVente() {
                 icon="eyedropper-variant"
                 mode="text"
                 onPress={() => showModal(vente, index)}
-              >
-                Afficher
-              </Button>
+              />
             </DataTable.Cell>
             <DataTable.Cell>
               <Button
-                icon="eyedropper-variant"
+                icon="pencil-outline"
                 mode="text"
                 onPress={() => showModifierModal(vente)}
-              >
-                Modifier
-              </Button>
+              />
             </DataTable.Cell>
           </DataTable.Row>
         ))}
@@ -316,10 +290,15 @@ export default function SelectAllVente() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: hp("5%"),
+    alignItems: "center",
+    justifyContent: "center",
+  },
   scrollView: {
-    height: hp(70),
+    paddingHorizontal: wp("5%"),
   },
   Card: {
-    marginHorizontal: wp(0),
+    marginVertical: hp("2%"),
   },
 });

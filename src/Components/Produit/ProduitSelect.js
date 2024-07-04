@@ -23,23 +23,7 @@ export default function ProduitSelect() {
   };
   const hideModal = () => setVisible(false);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        let db = await database.openDatabase();
-        let products = await database.getProducts(db);
 
-        dispatch({
-          type: "getTheProduct",
-          payload: products,
-        });
-        // console.log(await database.getFournisseur(db))
-      } catch (error) {
-        console.error("Error select products:", error);
-      }
-    }
-    load();
-  }, []);
 
   return (
     <PaperProvider>

@@ -39,7 +39,7 @@ export default function Fournisseur() {
       try {
         let db = await database.openDatabase();
         let reslt = await database.insertFournisseur(db, name);
-        data.push({ id_fournisseur: reslt, nom_fournisseur: name });
+       // data.push({ id_fournisseur: reslt, nom_fournisseur: name });
         dispatch({
           type: "addProduct",
           payload: { id_fournisseur: reslt, nom_fournisseur: name },
@@ -75,7 +75,7 @@ export default function Fournisseur() {
       try {
         let db = await database.openDatabase();
         let fournisseurs = await database.getFournisseur(db);
-        setData(fournisseurs);
+        //setData(fournisseurs);
         dispatch({
           type: "getProducts",
           payload: fournisseurs,

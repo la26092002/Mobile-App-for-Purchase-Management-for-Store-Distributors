@@ -32,23 +32,7 @@ export default function CategorySelect({}) {
     }
   }
 
-  useEffect(() => {
-    async function load() {
-      try {
-        let db = await database.openDatabase();
-        let categories = await database.getCategories(db);
-        //setData(categories);
-        dispatch({
-          type: "getCategories",
-          payload: categories,
-        });
-        // console.log(await database.getFournisseur(db))
-      } catch (error) {
-        console.error("Error inserting fournisseur:", error);
-      }
-    }
-    load();
-  }, []);
+
 
 
   let supprimmerCategorie = async (index,id_category) => {

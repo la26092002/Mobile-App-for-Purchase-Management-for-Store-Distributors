@@ -61,23 +61,7 @@ export default function PackSelect() {
     }
   };
 
-  useEffect(() => {
-    async function load() {
-      try {
-        let db = await database.openDatabase();
-        let packs = await database.getPacks(db);
-        //setData(categories);
-        dispatch({
-          type: "getPack",
-          payload: packs,
-        });
-        // console.log(await database.getFournisseur(db))
-      } catch (error) {
-        console.error("Error Get packs:", error);
-      }
-    }
-    load();
-  }, []);
+
 
   const renderItem = (item) => {
     return (

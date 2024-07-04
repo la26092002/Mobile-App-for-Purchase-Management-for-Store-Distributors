@@ -3,44 +3,33 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import React from "react";
-import { Avatar, Button, Card, Text, TextInput } from "react-native-paper";
-import SegmentedButtonProduct from "../Components/SegmentedButtonProduct";
-import ProduitSelect from "../Components/Produit/ProduitSelect";
-import CategorySelect from "../Components/Produit/CategorySelect";
-import PackSelect from "../Components/Produit/PackSelect";
-import ProductAdd from "../Components/Produit/ProductAdd";
+import React, { useEffect, useCallback } from "react";
 import SegmentedButtonProduct2 from "../Components/SegmentedButtonProduct2";
 import CreerVente from "../Components/Vente/AddVente/CreerVente";
-import SelectAllVente from "../Components/Vente/DispalyVente/SelectAllVente"
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+import SelectAllVente from "../Components/Vente/DispalyVente/SelectAllVente";
+
 export default function Vente() {
   const [part, setPart] = React.useState(0);
-  const [name, setName] = React.useState("");
+
+  useEffect(() => {
+    console.log("Vente component re-rendered");
+  }, []);
+
+  // Memoize setPart to prevent unnecessary re-renders
+  const memoizedSetPart = useCallback((newPart) => {
+    setPart(newPart);
+  }, []);
+
   return (
     <>
       <View style={styles.Container}>
-        {
-          //nav view
-        }
         <View style={styles.NavView}>
-          <SegmentedButtonProduct2 setPart={setPart} />
+          <SegmentedButtonProduct2 setPart={memoizedSetPart} />
         </View>
         <View style={styles.Bodyiew}>
-          {part == 0 && (
-            <>
-            <SelectAllVente /> 
-            </>
-          )}
-          {part == 1 && <CreerVente setPart={setPart} />}
+          {part === 0 && <SelectAllVente />}
+          {part === 1 && <CreerVente setPart={memoizedSetPart} />}
         </View>
-        {
-          //body view
-        }
-
-        {
-          //bottom view
-        }
       </View>
     </>
   );
