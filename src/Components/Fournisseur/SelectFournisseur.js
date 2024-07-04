@@ -7,11 +7,11 @@ export default function SelectFournisseur({ setStatus }) {
   const { state, dispatch } = useDataContext();
 
   const [fournisseur, setFournisseur] = useState(null);
-  let presser = (id_fournisseur) => {
+  let presser = (id_fournisseur,nom_fournisseur) => {
     setFournisseur(id_fournisseur);
     dispatch({
       type: "addVenteFournisseur",
-      payload: id_fournisseur,
+      payload: {id_fournisseur,nom_fournisseur},
     });
     setStatus(3);
   };
@@ -59,7 +59,7 @@ export default function SelectFournisseur({ setStatus }) {
               <Button
                 icon="eyedropper-variant"
                 mode="text"
-                onPress={() => presser(fournisseur.id_fournisseur)}
+                onPress={() => presser(fournisseur.id_fournisseur,fournisseur.nom_fournisseur)}
               >
                 Selectionner
               </Button>

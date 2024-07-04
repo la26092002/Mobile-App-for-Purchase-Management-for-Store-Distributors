@@ -65,7 +65,7 @@ export default function CategorySelect({}) {
         <ScrollView style={styles.scrollView}>
           {categorieStatus && (
             <Button onPress={() => setCategorieStatus(!categorieStatus)}>
-              Ajouter Produit
+              Ajouter Categorie
             </Button>
           )}
           {!categorieStatus && (

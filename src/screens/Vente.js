@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: wp(100),
   },
   Bodyiew: {
-    height: hp(70),
+    height: hp(65),
     width: wp(100),
   },
   Card: {

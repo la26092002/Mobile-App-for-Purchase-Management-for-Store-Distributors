@@ -103,7 +103,8 @@ const reducer = (state, action) => {
         ...state,
         Ventes: {
           ...state.Ventes,
-          fournisseur: action.payload,
+          fournisseur: action.payload.id_fournisseur,
+          nom_fournisseur:action.payload.nom_fournisseur,
         },
       };
 
@@ -140,6 +141,9 @@ const reducer = (state, action) => {
     case "getToAllVentes":
       return { ...state, AllVentes: action.payload };
 
+    case "addToAllVentes":
+        return { ...state, AllVentes: [...state.AllVentes, action.payload] };
+  
     case "UpdateAllVentes":
       return {
         ...state,

@@ -31,7 +31,6 @@ export default function Fournisseur() {
   const [fournis, setFournis] = React.useState(false);
   const [name, setName] = React.useState("");
 
-  const [data, setData] = React.useState([]);
   const { state, dispatch } = useDataContext();
 
   let ajouterFournisseur = async () => {
@@ -69,27 +68,6 @@ export default function Fournisseur() {
     // Implement the save logic here
     setModifierVisible(false);
   };
-
-  useEffect(() => {
-    async function load() {
-      try {
-        let db = await database.openDatabase();
-        let fournisseurs = await database.getFournisseur(db);
-        //setData(fournisseurs);
-        dispatch({
-          type: "getProducts",
-          payload: fournisseurs,
-        });
-      } catch (error) {
-        console.error("Error select fournisseur:", error);
-      }
-    }
-    load();
-  }, []);
-
-  useEffect(() => {
-    console.log(state.products);
-  }, [state.products]);
 
   return (
     <PaperProvider>
