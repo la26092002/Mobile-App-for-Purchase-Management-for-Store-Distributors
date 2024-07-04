@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 
 const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeeeeee");
+  const db = await SQLite.openDatabaseAsync("databaseNameeeeeeeeeeeeeee");
   await db.execAsync(`
   PRAGMA journal_mode = WAL;
   
@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS vente (
   packs TEXT NOT NULL,
   produits TEXT NOT NULL,
   prixTotal TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   id_fournisseur INTEGER,
   FOREIGN KEY (id_fournisseur) REFERENCES fournisseur(id_fournisseur)
 );
@@ -201,7 +202,7 @@ const insertVente = async (db, packs, produits,prixTotal,id_fournisseur) => {
 //Get All vente
 const getVentes = async (db) => {
   try {
-    const allRows = await db.getAllAsync("SELECT * FROM vente JOIN fournisseur ON vente.id_fournisseur = fournisseur.id_fournisseur");
+    const allRows = await db.getAllAsync("SELECT * FROM vente JOIN fournisseur ON vente.id_fournisseur = fournisseur.id_fournisseur ORDER BY vente.created_at DESC");
     return allRows;
   } catch (error) {
     console.error("Error getting ventes:", error);
